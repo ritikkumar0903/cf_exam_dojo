@@ -1171,7 +1171,7 @@ V.selftest=()=>{
 function mountCalc(id){
   const mt=$("#calcmount");if(!mt)return;
   const keys=Object.keys(Templates).filter(k=>Templates[k].topic===id);
-  if(!keys.length){mt.innerHTML=`<div class="card"><p class="muted">Quant drills for this session are being added (Phase 2).</p></div>`;return;}
+  if(!keys.length){mt.innerHTML=`<div class="card"><p class="muted">No calculation drills for this session — the concepts are tested in the Concepts tab and worked examples in Takeaways.</p></div>`;return;}
   let state={key:keys[0],seed:Date.now()%100000,revealed:false};
   function draw(){
     const T=Templates[state.key];const p=T.gen(rng(state.seed));
@@ -1201,11 +1201,26 @@ function mountCalc(id){
 function mountMCQ(id){
   const mt=$("#mcqmount");if(!mt)return;
   const bank=MCQS[id]||[];
-  if(!bank.length){mt.innerHTML=`<div class="card"><p class="muted">Concept questions for this session are being added (Phase 2).</p></div>`;return;}
-  let i=0;
+  if(!bank.length){mt.innerHTML=`<div class="card"><p class="muted">No concept questions for this session — see Takeaways and Calculate tabs.</p></div>`;return;}
+  // Shuffle once per session so order varies but questions never repeat mid-run
+  const queue=shuffled(bank.slice());
+  let i=0,correct=0;
   function draw(){
-    const q=bank[i%bank.length];
-    mt.innerHTML=`<div class="muted" style="margin-bottom:6px">Question ${i+1} of ${bank.length}</div>
+    if(i>=queue.length){
+      // Completion screen
+      const pct=Math.round(correct/queue.length*100);
+      mt.innerHTML=`<div class="card" style="text-align:center;padding:28px 18px">
+        <div class="bignum" style="font-size:48px">${pct}%</div>
+        <div class="muted" style="margin:.4em 0">${correct} / ${queue.length} correct</div>
+        <div class="bar" style="margin:12px auto;max-width:280px"><i style="width:${pct}%"></i></div>
+        <p class="muted" style="font-size:13.5px;margin:.8em 0">${pct>=80?"Solid — move to Calculate or a Mini-case.":pct>=50?"Review the Takeaways for any you missed, then retry.":"Revisit the Takeaways before retrying."}</p>
+        <button class="btn primary" id="retry">Retry all ${queue.length} questions</button>
+      </div>`;
+      $("#retry").onclick=()=>{i=0;correct=0;queue.splice(0,queue.length,...shuffled(bank.slice()));draw();};
+      return;
+    }
+    const q=queue[i];
+    mt.innerHTML=`<div class="muted" style="margin-bottom:6px">Question ${i+1} of ${queue.length}</div>
     <div class="card"><p style="font-weight:600">${esc(q.q)}</p><div id="opts"></div>
       <div class="row" style="margin-top:10px"><button class="btn ghost sm" id="next" disabled>Next →</button></div></div>`;
     const opts=$("#opts");
@@ -1216,8 +1231,9 @@ function mountMCQ(id){
         if(opts.dataset.done)return;opts.dataset.done="1";
         disp.forEach((oo,j)=>{const bb=opts.children[j];bb.classList.add("reveal");if(oo.correct)bb.classList.add("correct");});
         b.classList.add(o.correct?"correct":"wrong");
+        if(o.correct)correct++;
         Store.logAttempt(id,!!o.correct);
-        const mk="m_"+id+"_"+(i%bank.length);
+        const mk="m_"+id+"_"+i;
         if(!o.correct)Store.addMistake({kind:"mcq",key:mk,topic:id,q:q.q,options:q.options,ts:Date.now()});
         else Store.clearMistake(mk);
         $("#next").disabled=false;
@@ -1232,7 +1248,7 @@ function mountMCQ(id){
 function mountExplore(id){
   const mt=$("#exmount");if(!mt)return;
   const keys=Object.keys(EXPLORE).filter(k=>EXPLORE[k].topic===id);
-  if(!keys.length){mt.innerHTML=`<div class="card"><p class="muted">An interactive lab for this session is coming.</p></div>`;return;}
+  if(!keys.length){mt.innerHTML=`<div class="card"><p class="muted">No interactive lab for this session.</p></div>`;return;}
   let cur=keys[0];
   const vals={};
   function draw(){

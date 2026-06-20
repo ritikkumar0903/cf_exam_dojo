@@ -71,6 +71,17 @@ code{background:var(--bg2);border:1px solid var(--line);border-radius:6px;paddin
 .frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .35em}
 .frac>span:last-child{padding:0 .35em}
 .formula{font-size:16px;line-height:2}
+.fbox{background:color-mix(in srgb,var(--acc) 6%,var(--card2));border:1px solid color-mix(in srgb,var(--acc) 18%,var(--line));border-radius:var(--r2);padding:11px 15px;margin:6px 0}
+.fbox.crit{border-color:var(--acc);border-left:3px solid var(--acc)}
+.fbox .fnm{font-size:12.5px;font-weight:700;color:var(--tx2);margin-bottom:4px;display:flex;align-items:center;gap:7px}
+.fbox .fexpr{font-size:17px;line-height:2.3}
+.fbox .fwhen{font-size:12.5px;color:var(--tx2);border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent);padding-top:7px;margin-top:7px}
+.worked-box{background:color-mix(in srgb,var(--acc2) 7%,var(--card2));border:1px solid color-mix(in srgb,var(--acc2) 22%,var(--line));border-left:3px solid var(--acc2);border-radius:0 var(--r2) var(--r2) 0;padding:14px 16px;margin:4px 0}
+.worked-hdr{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--acc2);margin-bottom:10px}
+.worked-body{font-size:14px;line-height:1.75}
+.worked-body b{color:var(--tx)}
+.pitfall-item{display:flex;gap:9px;align-items:flex-start;padding:8px 12px;background:color-mix(in srgb,var(--bad) 7%,var(--card2));border:1px solid color-mix(in srgb,var(--bad) 18%,var(--line));border-radius:10px;font-size:13.5px;margin:4px 0}
+.exam-item{display:flex;gap:9px;align-items:flex-start;padding:8px 12px;background:color-mix(in srgb,var(--good) 7%,var(--card2));border:1px solid color-mix(in srgb,var(--good) 18%,var(--line));border-radius:10px;font-size:13.5px;margin:4px 0}
 .good{color:var(--good)}.bad{color:var(--bad)}.warn{color:var(--warn)}
 .pill{padding:2px 8px;border-radius:8px;font-size:12px;font-weight:700}
 .pill.g{background:color-mix(in srgb,var(--good) 22%,transparent);color:var(--good)}
@@ -1066,17 +1077,48 @@ V.topic=(id)=>{
 function renderTakeaways(id){
   const k=TAKEAWAYS[id];
   if(!k)return `<div class="card"><p class="muted">Detailed takeaways for this session are being added. For now see the <a href="#/formula">formula sheet</a> and Concepts/Calculate tabs.</p></div>`;
-  const sec=(t,b)=>`<h3>${t}</h3>${b}`;
-  let h=`<div class="card"><div class="muted">${esc(k.session)}</div>`;
-  h+=sec("The problem",`<p>${esc(k.problem)}</p>`);
-  h+=sec("The approach",`<p>${esc(k.approach)}</p>`);
-  if(k.intuition)h+=sec("Intuition",`<p>${esc(k.intuition)}</p>`);
-  h+=sec("Key concepts",`<ul>${k.concepts.map(c=>`<li><b>${esc(c[0])}:</b> ${esc(c[1])}</li>`).join("")}</ul>`);
-  if(k.worked)h+=sec("Worked example",`<div class="card" style="background:var(--card2)">${k.worked}</div>`);
-  if(k.formulas&&k.formulas[0]!=="—")h+=sec("Formulas",`<div class="formula">${k.formulas.map(f=>`<div>${f}</div>`).join("")}</div>`);
-  else if(k.formulaNote)h+=sec("Formulas",`<p class="muted">${esc(k.formulaNote)}</p>`);
-  if(k.pitfalls)h+=sec("Common mistakes",`<ul>${k.pitfalls.map(p=>`<li class="bad" style="color:var(--tx)"><span class="bad">✗</span> ${esc(p)}</li>`).join("")}</ul>`);
-  h+=sec("What the examiner emphasizes",`<ul>${k.exam.map(e=>`<li>${esc(e)}</li>`).join("")}</ul>`);
+  const sec=(icon,t,b)=>`<div style="margin:16px 0 4px"><h3 style="display:flex;align-items:center;gap:7px;margin-bottom:8px"><span style="font-size:17px;line-height:1">${icon}</span>${t}</h3>${b}</div>`;
+
+  /* ---- Formulas: cross-ref FORMULAS array for rich HTML+frac+when ---- */
+  const topicFs=FORMULAS.filter(f=>f.t===id);
+  let formulaBlock="";
+  if(topicFs.length){
+    formulaBlock=topicFs.map(f=>`<div class="fbox${f.critical?" crit":""}">
+      <div class="fnm">${esc(f.nm)}${f.critical?'<span class="pill g" style="font-size:10px;padding:1px 6px">★ core</span>':''}</div>
+      <div class="fexpr formula">${f.expr}</div>
+      <div class="fwhen">When to use: ${esc(f.when)}</div>
+    </div>`).join("");
+  } else if(k.formulas&&k.formulas[0]!=="—"){
+    formulaBlock=k.formulas.map(f=>`<div class="fbox"><div class="fexpr formula">${esc(f)}</div></div>`).join("");
+  } else if(k.formulaNote){
+    formulaBlock=`<p class="muted">${esc(k.formulaNote)}</p>`;
+  }
+
+  /* ---- Worked example: parse bold-delimited steps from the string ---- */
+  function workedHTML(raw){
+    // Split on ". " after a bolded result to get visual sub-examples
+    // Also highlight anything in <b> as a key result
+    // We render as a structured box with a header
+    const parts=raw.split(/(?<=\.)\s+(?=<b>)/);
+    const inner=parts.length>1
+      ? parts.map((p,i)=>`<div style="margin-bottom:${i<parts.length-1?"12px":"0"};padding-bottom:${i<parts.length-1?"12px":"0"};${i<parts.length-1?"border-bottom:1px solid color-mix(in srgb,var(--line) 50%,transparent)":""}">${p}</div>`).join("")
+      : raw;
+    return `<div class="worked-box">
+      <div class="worked-hdr">📝 worked example</div>
+      <div class="worked-body">${inner}</div>
+    </div>`;
+  }
+
+  let h=`<div class="card">`;
+  h+=`<div class="muted" style="font-size:12.5px;margin-bottom:2px">${esc(k.session)}</div>`;
+  h+=sec("❓","The problem",`<p style="margin:.3em 0;color:var(--tx2)">${esc(k.problem)}</p>`);
+  h+=sec("🧭","The approach",`<p style="margin:.3em 0">${esc(k.approach)}</p>`);
+  if(k.intuition)h+=sec("💡","Intuition",`<p style="margin:.3em 0">${esc(k.intuition)}</p>`);
+  h+=sec("📚","Key concepts",`<ul style="margin:.3em 0;padding-left:18px">${k.concepts.map(c=>`<li style="margin:.45em 0"><b>${esc(c[0])}:</b> ${esc(c[1])}</li>`).join("")}</ul>`);
+  if(formulaBlock)h+=sec("📐","Formulas",formulaBlock);
+  if(k.worked)h+=sec("🔢","Worked example",workedHTML(k.worked));
+  if(k.pitfalls)h+=sec("⚠️","Common mistakes",k.pitfalls.map(p=>`<div class="pitfall-item"><span class="bad" style="margin-top:1px;flex-shrink:0">✗</span><span>${esc(p)}</span></div>`).join(""));
+  h+=sec("🎯","What the examiner emphasizes",k.exam.map(e=>`<div class="exam-item"><span class="good" style="margin-top:1px;flex-shrink:0">✓</span><span>${esc(e)}</span></div>`).join(""));
   return h+`</div>`;
 }
 V.formula=()=>{

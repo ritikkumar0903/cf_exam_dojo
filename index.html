@@ -1,0 +1,1585 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CF Exam Dojo — Corporate Finance</title>
+<style>
+:root{
+  --bg:#160f1c; --bg2:#1d1422; --card:#221727; --card2:#2b1d31; --line:#3a2740;
+  --tx:#f4e9f0; --tx2:#c79bb4; --tx3:#946b85; --acc:#fb7185; --acc2:#fbbf24;
+  --good:#4ade80; --bad:#f87171; --warn:#fbbf24; --chip:#3a2740;
+  --grad:linear-gradient(135deg,#fb7185,#fb923c 55%,#fbbf24); --ontx:#2a0e16;
+  --sh1:0 1px 2px rgba(0,0,0,.45); --sh2:0 10px 34px rgba(0,0,0,.4);
+  --r:16px; --r2:12px; --sp:16px; --maxw:1040px;
+}
+:root[data-theme="light"]{
+  --bg:#fdf4f7; --bg2:#f8eaf0; --card:#ffffff; --card2:#fdf3f7; --line:#f0d9e4;
+  --tx:#3a1626; --tx2:#8a5a73; --tx3:#b08aa0; --chip:#fbe4ee;
+  --good:#15803d; --bad:#dc2626; --warn:#b45309; --ontx:#2a0e16;
+  --sh1:0 1px 2px rgba(120,40,80,.12); --sh2:0 10px 30px rgba(150,60,100,.15);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--acc);text-decoration:none}
+.skip{position:absolute;left:-999px;top:0;background:var(--acc);color:#fff;padding:8px 14px;border-radius:0 0 8px 0;z-index:100}
+.skip:focus{left:0}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--sp)}
+header.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topin{display:flex;align-items:center;gap:14px;height:60px;max-width:var(--maxw);margin:0 auto;padding:0 var(--sp)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px}
+.mark{width:30px;height:30px;border-radius:9px;background:var(--grad);display:grid;place-items:center;color:var(--ontx);font-weight:800;box-shadow:var(--sh1)}
+.tabs{display:flex;gap:4px;margin-left:auto}
+.tabs a{color:var(--tx2);padding:8px 12px;border-radius:10px;font-weight:600;font-size:14px}
+.tabs a.on{color:var(--tx);background:var(--card)}
+.tabs a:hover{color:var(--tx)}
+.iconbtn{background:var(--card);border:1px solid var(--line);color:var(--tx2);width:38px;height:38px;border-radius:10px;cursor:pointer;display:grid;place-items:center}
+.iconbtn:hover{color:var(--tx)}
+main{padding:22px 0 96px}
+h1{font-size:26px;margin:.2em 0 .4em}
+h2{font-size:19px;margin:1.2em 0 .5em}
+h3{font-size:15px;margin:1em 0 .4em;color:var(--tx2)}
+.muted{color:var(--tx2)}
+.dim{color:var(--tx3)}
+.grid{display:grid;gap:var(--sp)}
+.cards{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--sh1)}
+.card.lift{transition:transform .15s ease,box-shadow .15s ease;cursor:pointer}
+.card.lift:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn{background:var(--card2);color:var(--tx);border:1px solid var(--line);padding:9px 15px;border-radius:11px;font-weight:600;cursor:pointer;font-size:14px}
+.btn:hover{border-color:var(--acc)}
+.btn.primary{background:var(--grad);border:none;color:var(--ontx);box-shadow:var(--sh1)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:6px 11px;font-size:13px}
+.chip{display:inline-block;background:var(--chip);color:var(--tx2);padding:3px 9px;border-radius:999px;font-size:12px;font-weight:600}
+.chip.s{background:transparent;border:1px solid var(--line)}
+input,select,textarea{font:inherit;color:var(--tx);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+input:focus,textarea:focus,select:focus,.btn:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.seg{display:inline-flex;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px;flex-wrap:wrap}
+.seg button{background:transparent;border:none;color:var(--tx2);padding:7px 13px;border-radius:9px;cursor:pointer;font-weight:600;font-size:13px}
+.seg button.on{background:var(--card);color:var(--tx);box-shadow:var(--sh1)}
+.bar{height:9px;background:var(--bg2);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.bar>i{display:block;height:100%;background:var(--grad)}
+table.dt{border-collapse:collapse;width:100%;font-size:13.5px}
+table.dt th,table.dt td{border:1px solid var(--line);padding:6px 9px;text-align:right}
+table.dt th:first-child,table.dt td:first-child{text-align:left;color:var(--tx2)}
+table.dt th{background:var(--bg2);font-weight:600}
+code{background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:var(--tx)}
+.frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 .15em}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .35em}
+.frac>span:last-child{padding:0 .35em}
+.formula{font-size:16px;line-height:2}
+.good{color:var(--good)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+.pill{padding:2px 8px;border-radius:8px;font-size:12px;font-weight:700}
+.pill.g{background:color-mix(in srgb,var(--good) 22%,transparent);color:var(--good)}
+.pill.b{background:color-mix(in srgb,var(--bad) 22%,transparent);color:var(--bad)}
+.opt{display:block;width:100%;text-align:left;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0;cursor:pointer;color:var(--tx)}
+.opt:hover{border-color:var(--acc)}
+.opt.correct{border-color:var(--good);background:color-mix(in srgb,var(--good) 12%,var(--card2))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--card2))}
+.why{font-size:13px;color:var(--tx2);margin-top:6px;display:none}
+.opt.reveal .why{display:block}
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--line);padding:10px 16px;border-radius:12px;box-shadow:var(--sh2);z-index:80;opacity:0;transition:opacity .2s}
+.toast.show{opacity:1}
+.bignum{font-size:40px;font-weight:800;line-height:1}
+.legend span{display:inline-block;margin:2px 10px 2px 0;font-size:12.5px;color:var(--tx2)}
+.kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:1px 6px;font-size:12px;background:var(--bg2)}
+.foot{max-width:var(--maxw);margin:24px auto 0;padding:18px var(--sp) 28px;border-top:1px solid var(--line);color:var(--tx3);font-size:13px;text-align:center}
+.foot a{color:var(--tx2)}
+nav.bottom{display:none}
+@media(max-width:680px){
+  .tabs{display:none}
+  nav.bottom{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);z-index:40;padding:6px 4px 10px}
+  nav.bottom a{flex:1;text-align:center;color:var(--tx3);font-size:11px;font-weight:600;padding:4px;border-radius:8px}
+  nav.bottom a.on{color:var(--acc)}
+  nav.bottom a span{display:block;font-size:18px;line-height:1.2}
+  .foot{padding-bottom:84px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.sheetcols{column-count:2;column-gap:18px}
+.sheetitem{break-inside:avoid;margin-bottom:10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+#sheetgrid{align-items:start}
+@media(max-width:680px){#sheetgrid{grid-template-columns:1fr!important}}
+@media print{
+  header.top,nav.bottom,.tabs,.iconbtn{display:none!important}
+  body *{visibility:hidden}
+  #printsheet,#printsheet *{visibility:visible}
+  #printsheet{position:absolute;left:0;top:0;width:100%;color:#000}
+  #printsheet .sheetcols{column-count:2}
+  #printsheet .formula{font-size:13px}
+}
+</style>
+</head>
+<body>
+<a href="#app" class="skip">Skip to content</a>
+<header class="top">
+  <div class="topin">
+    <a class="brand" href="#/home"><span class="mark">CF</span><span>Exam Dojo</span></a>
+    <nav class="tabs" id="tabs" aria-label="Primary"></nav>
+    <button class="iconbtn" id="theme" aria-label="Toggle theme" aria-pressed="false">◐</button>
+  </div>
+</header>
+<main><div class="wrap" id="app" tabindex="-1"></div></main>
+<footer class="foot"><a href="#/stats">Stats &amp; calibration</a> · <a href="#/sheet">Cheat sheet</a> · <a href="#/selftest">Self-test</a> · <span class="dim">CF Exam Dojo — offline, private to this device</span></footer>
+<nav class="bottom" id="bottomnav" aria-label="Primary mobile"></nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+/* ===================================================================
+   CF EXAM DOJO — single-file, offline. (Phase 0 foundation build.)
+   =================================================================== */
+const App = (() => {
+
+/* ---------- PRNG ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function hashStr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+const rng=(seed)=>mulberry32(typeof seed==="number"?seed:hashStr(String(seed)));
+const ri=(r,lo,hi)=>lo+Math.floor(r()*(hi-lo+1));
+const rf=(r,lo,hi,dp=2)=>{const v=lo+r()*(hi-lo);const m=10**dp;return Math.round(v*m)/m;};
+const pick=(r,arr)=>arr[Math.floor(r()*arr.length)];
+
+/* ---------- CFMath (verified: 45/45 self-tests) ---------- */
+const CFMath=(()=>{
+  const r2=x=>Math.round(x*100)/100;
+  const ebitda=(s,c,o)=>s*(1-c-o);
+  const nwc=(ar,inv,ap)=>ar+inv-ap;
+  const ppeRoll=(p,capx,dep)=>p+capx-dep;
+  const fcf=(ebit,t,dep,capx,d)=>(1-t)*ebit+dep-capx-d;
+  const fcfFromEbitda=(e,t,dep,capx,d)=>(1-t)*e+t*dep-capx-d;
+  const taxOnSale=(s,b,t)=>t*(s-b);
+  const liquidation=(s,b,t)=>s-taxOnSale(s,b,t);
+  const payback=(cfs)=>{let cum=0;for(let i=0;i<cfs.length;i++){const p=cum;cum+=cfs[i];if(cum>=0&&i>0){return(i-1)+(-p)/cfs[i];}}return Infinity;};
+  const npv=(cfs,rate)=>cfs.reduce((s,c,i)=>s+c/Math.pow(1+rate,i),0);
+  const npvPerp=(inv,f1,r,g)=>-inv+f1/(r-g);
+  const tvPerp=(f,r,g)=>(1+g)*f/(r-g);
+  const pvTV=(tv,r,n)=>tv/Math.pow(1+r,n);
+  const capm=(rf_,b,mrp)=>rf_+b*mrp;
+  const wacc=(D,E,rD,rE,t)=>{const v=D+E;return(D/v)*rD*(1-t)+(E/v)*rE;};
+  const waccW=(lev,rD,rE,t)=>lev*rD*(1-t)+(1-lev)*rE;
+  const preTaxWacc=(lev,rD,rE)=>lev*rD+(1-lev)*rE;
+  const netDebt=(d,c)=>d-c;
+  const mktEquity=(p,s)=>p*s;
+  const unlever=(bE,D,E,bD=0)=>{const v=D+E;return(E/v)*bE+(D/v)*bD;};
+  const unleverSafe=(bE,dE)=>bE/(1+dE);
+  const relever=(bA,dE,bD=0)=>bA+dE*(bA-bD);
+  const evFromEquity=(e,d,c)=>e+d-c;
+  const equityFromEV=(ev,c,d)=>ev+c-d;
+  const sharePrice=(e,s)=>e/s;
+  const eps=(ni,s)=>ni/s;
+  const pe=(p,e)=>p/e;
+  const peValue=(peer,tEPS)=>peer*tEPS;
+  const evEbitda=(ev,e)=>ev/e;
+  const evEbitdaValue=(m,te)=>m*te;
+  const roe=(ni,be)=>ni/be;
+  const roa=(ni,int,ba)=>(ni+int)/ba;
+  const roic=(ebit,t,be,nd)=>ebit*(1-t)/(be+nd);
+  const sustGrowth=(d,roeV)=>(1-d)*roeV;
+  const assetGrowth=(a,ap)=>(a-ap)/ap;
+  const dEquity=(ni,div,bb,iss)=>ni-div-bb+iss;
+  const pvITS=(D,tau)=>tau*D;
+  const leveredValue=(vU,D,tau)=>vU+tau*D;
+  const leveredEquity=(vL,D)=>vL-D;
+  const specialDivPrice=(ev,c,d,s,dps)=>sharePrice(equityFromEV(ev,c,d),s)-dps;
+  const buybackPrice=(ev,c,d,s,amt)=>{const p=sharePrice(equityFromEV(ev,c,d),s);const sb=amt/p;return equityFromEV(ev,c-amt,d)/(s-sb);};
+  const sharesIssued=(mc,p)=>mc/p;
+  const combinedEPS=(eA,eB,sA,ns)=>(eA+eB)/(sA+ns);
+  const dealPremium=(dp,u)=>(dp-u)/u;
+  const issuancePrice=(N,Vm,add,raise)=>(Vm+add-raise)/N;
+  const issuanceShares=(raise,p)=>raise/p;
+  return {r2,ebitda,nwc,ppeRoll,fcf,fcfFromEbitda,taxOnSale,liquidation,payback,npv,npvPerp,tvPerp,pvTV,capm,wacc,waccW,preTaxWacc,netDebt,mktEquity,unlever,unleverSafe,relever,evFromEquity,equityFromEV,sharePrice,eps,pe,peValue,evEbitda,evEbitdaValue,roe,roa,roic,sustGrowth,assetGrowth,dEquity,pvITS,leveredValue,leveredEquity,specialDivPrice,buybackPrice,sharesIssued,combinedEPS,dealPremium,issuancePrice,issuanceShares};
+})();
+
+/* ---------- SelfTest ---------- */
+const SelfTest=(()=>{
+  const M=CFMath;const near=(g,w,t=0.02)=>Math.abs(g-w)<=t;const nearR=(g,w,r=0.005)=>Math.abs(g-w)<=Math.abs(w)*r+1e-9;
+  function run(){const T=[];const ok=(n,g,w,t)=>T.push({name:n,pass:near(g,w,t),got:g,want:w});const okR=(n,g,w,r)=>T.push({name:n,pass:nearR(g,w,r),got:g,want:w});
+    ok("EBITDA 200,50%,10%=80",M.ebitda(200,.5,.10),80);
+    ok("NWC=94",M.nwc(211.5,23.5,141),94,.05);
+    ok("PPE 10+1-0.5=10.5",M.ppeRoll(10,1,.5),10.5);
+    ok("tax gain=10",M.taxOnSale(200,100,.10),10);
+    ok("tax loss=-1",M.taxOnSale(60,70,.10),-1);
+    ok("liquidation=1.14",M.liquidation(1.2,1,.30),1.14);
+    ok("payback=2.5",M.payback([-20,10,5,10,5,10]),2.5,.001);
+    ok("npvPerp=12.26",M.npvPerp(20,1,.041,.01),12.26,.02);
+    ok("npvPerp QB=428.70",M.npvPerp(180,70,.135,.02),428.70,.1);
+    ok("TV=2020",M.tvPerp(100,.06,.01),2020,.5);
+    ok("TV Greenland=37.20",M.tvPerp(2,.0696,.015),37.20,.05);
+    ok("pvTV=26.57",M.pvTV(37.20,.0696,5),26.57,.05);
+    ok("CAPM=13.649",M.capm(4.7,1.57,5.7),13.649,.01);
+    ok("CAPM=13.5",M.capm(3,1.5,7),13.5);
+    okR("WACC Boeing=11.41",M.waccW(.26,6,13.65,.16),11.41,.01);
+    ok("preTaxWACC=6",M.preTaxWacc(.5,4,8),6);
+    ok("netDebt=190",M.netDebt(890,700),190);
+    ok("unlever lev25%=1.5",M.unleverSafe(2,1/3),1.5);
+    ok("unlever Orange=0.123",M.unleverSafe(.25,1.03),.123,.005);
+    ok("relever bD0=4.5",M.relever(1.5,2,0),4.5);
+    ok("relever bD.15=4.2",M.relever(1.5,2,.15),4.2);
+    ok("relever neg=0.75",M.relever(1,-.25,0),.75);
+    ok("equityFromEV=150",M.equityFromEV(200,50,100),150);
+    ok("sharePrice=15",M.sharePrice(150,10),15);
+    ok("EV=4990",M.evFromEquity(4800,890,700),4990,1);
+    ok("PE=10",M.pe(10,1),10);
+    ok("peValue=10",M.peValue(10,1),10);
+    ok("ROE=6.38%",M.roe(14.3,224.2)*100,6.38,.02);
+    ok("g*=3.19%",M.sustGrowth(.5,6.38),3.19,.02);
+    ok("g* UST=36",M.sustGrowth(.64,100),36,.01);
+    ok("assetGrowth=30.43%",M.assetGrowth(1500,1150)*100,30.43,.02);
+    ok("dEquity=100",M.dEquity(200,120,30,50),100);
+    ok("dEquity=250",M.dEquity(50,0,0,200),250);
+    ok("PV ITS=100",M.pvITS(500,.20),100);
+    ok("PV ITS=200",M.pvITS(1000,.20),200);
+    ok("leveredV=1100",M.leveredValue(1000,500,.20),1100);
+    ok("specialDiv=50",M.specialDivPrice(4000,2000,0,100,10),50,.01);
+    ok("buyback=60",M.buybackPrice(4000,2000,0,100,1000),60,.01);
+    ok("sharesIssued=50000",M.sharesIssued(2000000,40),50000,1);
+    ok("combinedEPS=2.667",M.combinedEPS(200000,200000,100000,50000),2.667,.01);
+    ok("premium=36.4%",M.dealPremium(12.10,8.87)*100,36.4,.1);
+    ok("issuancePrice=14",M.issuancePrice(10,125,65,50),14,.01);
+    ok("issuanceShares=3.571",M.issuanceShares(50,14),3.571,.01);
+    const pass=T.filter(t=>t.pass).length;return{total:T.length,pass,fail:T.length-pass,tests:T};}
+  return {run};
+})();
+
+/* ---------- Helpers ---------- */
+const $=(s,el=document)=>el.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const frac=(a,b)=>`<span class="frac"><span>${a}</span><span>${b}</span></span>`;
+function shuffled(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("show"),1800);}
+function daysToExam(){const d=Store.get().examDate;if(!d)return null;const ex=new Date(d+"T00:00:00");const now=new Date();const a=new Date(now.getFullYear(),now.getMonth(),now.getDate());return Math.round((ex-a)/864e5);}
+function icon(n){const p={home:"M3 11l9-8 9 8M5 10v10h14V10",learn:"M4 5h16v14H4zM8 5v14",deck:"M4 7h13v13H4zM7 4h13v13",exam:"M6 3h9l3 3v15H6zM9 12h6M9 16h6",case:"M4 7h16v12H4zM9 7V5h6v2",mix:"M4 6h16M4 12h16M4 18h16",sheet:"M6 3h12v18H6zM9 8h6M9 12h6M9 16h4",star:"M12 3l3 6 6 .5-4.5 4 1.4 6L12 16l-5.3 3.5 1.4-6L3.6 9.5 9.6 9z"}[n]||"M12 12h.01";return `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${p}"/></svg>`;}
+
+/* ---------- Store ---------- */
+const KEY="cfdojo:v1", TKEY="cfdojo:theme";
+const Store=(()=>{
+  const def={schemaVersion:1,examDate:"2026-06-23",streak:0,lastActiveDay:null,topics:{},cards:{},attempts:[],mistakes:[],calib:{sure:{n:0,ok:0},unsure:{n:0,ok:0},guess:{n:0,ok:0}},reflections:[]};
+  let state;
+  try{const raw=localStorage.getItem(KEY);state=raw?Object.assign({},def,JSON.parse(raw)):Object.assign({},def);}
+  catch(e){state=Object.assign({},def);}
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){toast("Couldn't save progress (storage full or private mode)");}};
+  return {
+    get:()=>state,
+    update:(fn)=>{fn(state);save();},
+    logAttempt:(topic,ok)=>{state.attempts.push({topic,ok,t:Date.now()});if(state.attempts.length>800)state.attempts=state.attempts.slice(-800);const td=state.topics[topic]||(state.topics[topic]={n:0,ok:0});td.n++;if(ok)td.ok++;save();},
+    topicAcc:(topic)=>{const t=state.topics[topic];return t&&t.n?t.ok/t.n:0;},
+    addMistake:(snap)=>{state.mistakes=state.mistakes.filter(m=>m.key!==snap.key);state.mistakes.push(snap);if(state.mistakes.length>200)state.mistakes=state.mistakes.slice(-200);save();},
+    clearMistake:(key)=>{state.mistakes=state.mistakes.filter(m=>m.key!==key);save();},
+    card:(id)=>state.cards[id],
+    saveCard:(id,c)=>{state.cards[id]=c;save();},
+    reset:()=>{state=Object.assign({},def);save();}
+  };
+})();
+
+/* ---------- Spaced repetition (SM-2-lite, deadline-aware) ---------- */
+const SR=(()=>{
+  const DAY=864e5;
+  function init(){return {ef:2.3,reps:0,interval:0,due:0,lapses:0,delayN:0,delayOK:0,last:0};}
+  function capInterval(days){const d=daysToExam();if(d==null||d<=1)return Math.min(days,1);return Math.max(1,Math.min(days,Math.ceil(d*0.6)));}
+  function grade(id,q){ // q: 0 Again,1 Hard,2 Good,3 Easy
+    const c=Store.card(id)||init();const now=Date.now();
+    const wasDelayed=c.last&&(now-c.last)>=DAY;
+    if(wasDelayed){c.delayN++;if(q>=2)c.delayOK++;}
+    if(q===0){c.reps=0;c.interval=0;c.lapses++;c.ef=Math.max(1.3,c.ef-0.2);}
+    else{c.reps++;c.ef=Math.max(1.3,Math.min(2.6,c.ef+(0.1-(3-q)*(0.08+(3-q)*0.02))));
+      c.interval=c.reps===1?1:c.reps===2?3:capInterval(Math.round(c.interval*c.ef));}
+    c.due=now+(q===0?0:c.interval*DAY);c.last=now;Store.saveCard(id,c);return c;
+  }
+  function preview(id,q){const c=Store.card(id)||init();if(q===0)return "<10m";const reps=c.reps+1;let iv=reps===1?1:reps===2?3:Math.round(c.interval*c.ef);iv=capInterval(iv);return iv+"d";}
+  function dueList(){const now=Date.now();const due=[],fresh=[];for(const card of CARDS){const c=Store.card(card.id);if(!c||!c.last)fresh.push(card);else if(c.due<=now)due.push(card);}
+    const d=daysToExam();const cap=d==null?12:d<=2?40:d<=5?24:14;return due.concat(fresh).slice(0,cap);}
+  function retention(){let n=0,ok=0;for(const card of CARDS){const c=Store.card(card.id);if(c){n+=c.delayN;ok+=c.delayOK;}}return n?ok/n:0;}
+  return {grade,preview,dueList,retention,init};
+})();
+
+/* ---------- Content (Phase 0 seed; expands in Phase 2) ---------- */
+const TOPICS=[
+  {id:"proj",s:1,nm:"Project Valuation",half:"V"},
+  {id:"paper",s:2,nm:"Paper Tiger (case)",half:"V"},
+  {id:"wacc",s:3,nm:"Cost of Capital (WACC)",half:"V"},
+  {id:"compval",s:4,nm:"Company Valuation",half:"V"},
+  {id:"beyond",s:5,nm:"WACC & Beyond",half:"V"},
+  {id:"bouygues",s:6,nm:"Bouygues (case)",half:"V"},
+  {id:"ma",s:7,nm:"M&A",half:"V"},
+  {id:"brick",s:9,nm:"Brick House (case)",half:"FP"},
+  {id:"capstruct",s:11,nm:"Capital Structure",half:"FP"},
+  {id:"ust",s:12,nm:"UST (case)",half:"FP"},
+  {id:"loewen",s:13,nm:"Loewen (case)",half:"FP"},
+  {id:"mispricing",s:14,nm:"Security Mispricing",half:"FP"},
+  {id:"infineon",s:15,nm:"Infineon (case)",half:"FP"}
+];
+const topicNm=id=>{const t=TOPICS.find(x=>x.id===id);return t?t.nm:id;};
+
+const FORMULAS=[
+  {nm:"Free Cash Flow (FCFF)",t:"proj",critical:true,expr:`FCF = (1−t)·EBIT + Dep − CAPX − ΔNWC`,when:"Unlevered cash to all investors. Ignore interest; add back depreciation."},
+  {nm:"Net Working Capital",t:"proj",expr:`NWC = A/R + Inventory − A/P`,when:"ΔNWC (change vs prior year) enters FCF. ↑A/P raises FCF."},
+  {nm:"PPE roll-forward",t:"proj",expr:`PPE_end = PPE_begin + CAPX − Dep`,when:"Back out CAPX from a PPE path."},
+  {nm:"Liquidation value",t:"proj",expr:`LV = Sale − t·(Sale − Book)`,when:"Terminal value if assets sold; then resolve NWC."},
+  {nm:"NPV (perpetuity)",t:"proj",critical:true,expr:`NPV = −Inv + `+frac("FCF₁","r − g"),when:"Growing perpetuity from next year."},
+  {nm:"Terminal value",t:"compval",critical:true,expr:`TV = `+frac("(1+g)·FCF","r − g"),when:"Continuation value; use POST-forecast g; discount at same r."},
+  {nm:"CAPM",t:"wacc",critical:true,expr:`r_E = r_F + β_E·(r_M − r_F)`,when:"Cost of equity; MRP = r_M − r_F."},
+  {nm:"WACC",t:"wacc",critical:true,expr:`WACC = `+frac("D","D+E")+`·r_D·(1−t) + `+frac("E","D+E")+`·r_E`,when:"Use NET debt and MARKET equity."},
+  {nm:"Pre-tax WACC",t:"beyond",expr:`r_A = `+frac("D","D+E")+`·r_D + `+frac("E","D+E")+`·r_E`,when:"Unchanged by leverage (MM)."},
+  {nm:"Unlever beta (β_D=0)",t:"beyond",critical:true,expr:`β_A = `+frac("β_E","1 + D/E"),when:"Strip out the twin's leverage."},
+  {nm:"Relever beta",t:"beyond",critical:true,expr:`β_E = β_A + `+frac("D","E")+`·(β_A − β_D)`,when:"Apply project's target leverage."},
+  {nm:"Value bridge",t:"compval",critical:true,expr:`EV = Equity(mkt) + Net Debt`,when:"Equity = EV + Cash − Debt."},
+  {nm:"P/E multiple",t:"compval",expr:`Price = `+frac("P","E")+`_peers × EPS_target`,when:"Use latest price & shares."},
+  {nm:"EV/EBITDA",t:"compval",expr:`EV = `+frac("EV","EBITDA")+`_peers × EBITDA_target`,when:"Then value bridge to equity."},
+  {nm:"ROE",t:"brick",expr:`ROE = `+frac("Net Income","Book Equity"),when:"Depends on leverage — a drawback."},
+  {nm:"ROIC",t:"brick",expr:`ROIC = `+frac("EBIT·(1−t)","Book Equity + Net Debt"),when:"Operating return; compare to WACC."},
+  {nm:"Sustainable growth",t:"brick",critical:true,expr:`g* = (1 − d)·ROE`,when:"d = payout. g<g* cash cow; g>g* cash calf."},
+  {nm:"Change in equity",t:"brick",expr:`ΔEquity = NI − Div − Buyback + Issuance`,when:"Book equity roll-forward."},
+  {nm:"Interest tax shield",t:"capstruct",critical:true,expr:`PV(ITS) = τ·D`,when:"Perpetual debt; benefits shareholders."},
+  {nm:"Levered firm value",t:"capstruct",expr:`V_L = V_U + τ·D`,when:"MM with taxes; recap adds τ·D."},
+  {nm:"EPS (M&A)",t:"ma",expr:`Shares issued = `+frac("MktCap_target","Price_acquirer"),when:"Accretion is mechanical, not value."},
+  {nm:"Equity issuance (mispricing)",t:"mispricing",expr:`(N+n)·p = V_m + ΔProject ; n·p = Raise`,when:"Solve for p and n."}
+];
+
+/* MCQ bank (seed; expands to ~140 in Phase 2). Exactly one correct; every option has why. */
+const MCQS={
+  proj:[
+    {q:"If Accounts Payable (A/P) increases, what happens to FCF?",options:[
+      {t:"FCF increases",correct:true,why:"Higher A/P lowers NWC, and FCF = …−ΔNWC, so FCF rises (a source of cash)."},
+      {t:"FCF decreases",correct:false,why:"That would be true for ↑A/R or ↑inventory, which raise NWC."}]},
+    {q:"FCF adds back depreciation but removes interest. Why?",options:[
+      {t:"Depreciation isn't real cash; interest is financing, excluded from unlevered FCF",correct:true,why:"FCFF measures cash to ALL investors before financing."},
+      {t:"Both are non-cash",correct:false,why:"Interest is a real cash outflow; it's excluded because it's financing, not because it's non-cash."},
+      {t:"Both are real cash",correct:false,why:"Depreciation is a non-cash accounting charge."}]}
+  ],
+  wacc:[
+    {q:"In WACC, which measure of debt and equity do we use?",options:[
+      {t:"Net debt and market value of equity",correct:true,why:"Market values reflect the true current capital structure."},
+      {t:"Total debt and book equity",correct:false,why:"Book values are historical and ignore intangible/market value."},
+      {t:"Long-term debt and market cap",correct:false,why:"Use NET debt (debt − cash), not just long-term debt."}]},
+    {q:"Why do we usually NOT use β_D to get the cost of debt?",options:[
+      {t:"Individual bonds trade rarely, so β_D is hard to estimate",correct:true,why:"We approximate via credit rating → yield instead."},
+      {t:"CAPM cannot price bonds",correct:false,why:"In principle it can; the issue is estimation, not theory."},
+      {t:"Debt has no systematic risk",correct:false,why:"Risky debt does carry systematic risk."}]}
+  ],
+  capstruct:[
+    {q:"Who captures the value of the interest tax shield?",options:[
+      {t:"Shareholders",correct:true,why:"V_L = V_U + τD and the extra value flows to equity."},
+      {t:"Debtholders",correct:false,why:"Lenders just receive their contracted interest."},
+      {t:"The government",correct:false,why:"The government funds the subsidy; it doesn't receive the value."}]}
+  ],
+  mispricing:[
+    {q:"Why do stock prices typically fall when a firm announces an equity issue?",options:[
+      {t:"It signals managers may think the equity is overvalued",correct:true,why:"Adverse selection: overvalued firms issue more, so the market discounts issuance."},
+      {t:"EPS goes down",correct:false,why:"Mechanical dilution isn't value loss; the signal is the driver."}]}
+  ]
+};
+
+const TAKEAWAYS={
+  wacc:{session:"Session 3 · Cost of Capital (WACC)",
+    problem:"A project's cash flows go to all investors (debt + equity). What single discount rate reflects both the time value of money and the systematic risk of those cash flows?",
+    approach:"Compute the weighted average of the after-tax cost of debt and the cost of equity, using the firm's market-value capital structure as the weights. The cost of equity comes from CAPM; the cost of debt from the firm's credit rating.",
+    intuition:"Debt and equity investors require different returns because they bear different risk. WACC blends them in the proportions the firm actually uses, so it is the required return on the firm's assets as a whole. We discount FCF (which is unlevered, pre-financing) at WACC precisely because WACC already accounts for the financing mix.",
+    concepts:[
+      ["Capital-structure weights","D/(D+E) and E/(D+E). D is NET debt (total debt − cash); E is the MARKET value of equity (share price × shares), never book equity. Book values are historical and ignore intangibles."],
+      ["Cost of equity (CAPM)","r_E = r_F + β_E·(r_M − r_F). The risk-free rate r_F pays for time; β_E·MRP pays for systematic (non-diversifiable) risk. Only systematic risk is priced — idiosyncratic risk is diversified away."],
+      ["Equity beta β_E","How much the stock moves with the market. >1 = more cyclical than the market; reflects both business risk and the firm's leverage."],
+      ["Cost of debt","Find the firm's actual or approximate credit rating, then map it to the prevailing yield for that rating (risk-free + spread). We rarely use CAPM/β_D for debt because individual bonds trade thinly, so β_D is hard to estimate."],
+      ["After-tax debt","Use r_D·(1−t): interest is tax-deductible, so each €1 of interest only costs the firm (1−t) after the tax saving. This is the only place tax enters WACC."],
+      ["Why not the government-bond rate?","A project carries systematic risk that government bonds don't, so discounting at r_F would overvalue it."]],
+    worked:"<b>Boeing (2025).</b> Net debt = 57.65 − 10.47 = €47.18bn; market cap = €131.84bn → leverage D/(D+E) ≈ 26%. Tax 16%, r_D = 6%. β_E = 1.57, r_F = 4.7%, MRP = 5.7% → r_E = 4.7% + 1.57×5.7% = <b>13.65%</b>. WACC = 0.26×6%×(1−0.16) + 0.74×13.65% = <b>11.41%</b>.",
+    formulas:["WACC = D/(D+E)·r_D·(1−t) + E/(D+E)·r_E","r_E = r_F + β_E·(r_M − r_F)"],
+    pitfalls:["Using book equity or total (not net) debt for the weights.","Forgetting the (1−t) on the debt term.","Discounting at the risk-free or an index-fund return instead of a risk-matched rate."],
+    exam:["Always net debt + market equity — a frequent silent mark-loser.","Be explicit that interest is tax-deductible when justifying r_D·(1−t).","For an all-equity firm, WACC = r_E."]},
+  beyond:{session:"Session 5 · WACC & Beyond",
+    problem:"How do we get a discount rate for a project (or division) whose business risk and/or leverage differ from the firm as a whole, when we can't observe its own β?",
+    approach:"Use a publicly-traded 'twin' with the same business risk via the six easy steps: (1) get the twin's β_E, (2) unlever to its β_A, (3) the twin's β_A = the project's β_A (chosen to match), (4) relever at the project's target leverage to get the project's β_E, (5) CAPM → r_E, (6) plug into the WACC formula.",
+    intuition:"Leverage and business risk are tangled together inside an observed equity beta. Unlevering strips out the twin's financing to isolate pure business risk (asset beta); relevering re-introduces the project's own financing. Asset beta is a property of the business; equity beta is a property of the business AND the balance sheet.",
+    concepts:[
+      ["Asset (unlevered) beta β_A","Systematic risk of the business itself, independent of how it's financed. Same for firms in the same line of business. Driven by demand cyclicality and operating leverage (high fixed costs amplify profit swings → higher β_A)."],
+      ["Unlever (β_D = 0)","β_A = β_E / (1 + D/E). Use the twin's NET debt and MARKET equity for D/E."],
+      ["Relever","β_E = β_A + (D/E)·(β_A − β_D). With safe debt (β_D = 0): β_E = β_A·(1 + D/E). More leverage → higher β_E → higher r_E."],
+      ["Pre-tax WACC is flat","r_A = D/(D+E)·r_D + E/(D+E)·r_E does NOT change with leverage (Modigliani-Miller). The cheaper-debt weight rises, but r_D and r_E rise too — they exactly offset."],
+      ["After-tax WACC falls with leverage","Only through the tax shield: WACC = r_A − D/(D+E)·r_D·t. So leverage lowers WACC because of taxes, not because 'debt is cheaper.'"],
+      ["Debt beta","Usually assumed 0 (safe debt). If given β_D > 0, use it in the relever step — ignoring it overstates β_E and hence WACC."]],
+    worked:"<b>Twin with β_E = 2, net debt 1000, equity 3000</b> → D/E = 0.333, D/(D+E)=25%. Unlever: β_A = 2×(1−0.25) = <b>1.5</b>. Project target D/E = 2, β_D = 0: relever β_E = 1.5 + 2×1.5 = <b>4.5</b> → r_E = 3% + 4.5×7% = 34.5% → WACC = ⅓×34.5% + ⅔×4%×(1−0.30) = <b>13.37%</b>.",
+    formulas:["β_A = β_E/(1+D/E)","β_E = β_A + (D/E)(β_A − β_D)","r_A = D/(D+E)·r_D + E/(D+E)·r_E (flat in leverage)"],
+    pitfalls:["Plugging D/(D+E) where the formula wants D/E (or vice-versa).","Skipping the unlever step and using the twin's β_E directly.","Claiming WACC falls because debt is cheaper — name the tax shield instead."],
+    exam:["This is the flagship (*) problem — write all six steps explicitly, even if you miss a number.","Choose a pure-play twin in the project's business; never reuse a conglomerate's blended WACC.","If a debt beta is given, don't assume it's zero."]},
+  capstruct:{session:"Session 11 · Capital Structure / Financial Policy",
+    problem:"How much leverage should a company have? And more fundamentally — when does the financing mix affect firm value at all?",
+    approach:"Start from Modigliani-Miller: with perfect markets financing is irrelevant. Then relax the assumptions to see the two reasons it matters — effect on the business (incl. taxes) and mispricing. For capital structure, trade off the pros and cons of debt using a business-driven checklist and compare the firm to the average firm in the economy.",
+    intuition:"Leverage doesn't create value by 'using cheaper debt' — that just shifts risk onto equity, raising r_E to compensate (pre-tax WACC is unchanged). Real value effects come from frictions: the tax deductibility of interest (a government subsidy), the discipline debt imposes on managers, and — on the downside — the costs that arise when a firm gets near financial distress.",
+    concepts:[
+      ["Modigliani-Miller","Financing is irrelevant under 5 conditions: perfect/complete markets, financing reveals no info, no taxes, no bankruptcy costs, financing doesn't change cash flows (no agency costs). Policy matters only when one breaks."],
+      ["Debt pro 1 — interest tax shield","Interest is tax-deductible, a subsidy worth PV(ITS) = τ·D for perpetual debt. Want more debt when profits are high and the tax rate is high. The value accrues to shareholders."],
+      ["Debt pro 2 — discipline","Required debt payments drain free cash, curbing managers' tendency to waste it (empire-building, pet projects). Valuable when a mature firm throws off excess cash."],
+      ["Debt con — costs of financial distress","= cost of distress × probability of distress. Mostly INDIRECT and incurred even without actual bankruptcy: lost customers/suppliers/employees, fire-sale asset prices, aggressive rivals, plus direct fees."],
+      ["Debt overhang (Myers 1977)","With risky debt, a near-distress firm skips positive-NPV projects because the gains go to existing creditors, not the new equity funding them → underinvestment. Worsens as distress deepens."],
+      ["Risk-shifting / asset substitution","Equity (limited liability) gambles on excessively risky strategies near distress — 'heads I win, tails debtholders lose.' Both overhang and risk-shifting are indirect distress costs."],
+      ["Target leverage","No one-size-fits-all. Score each business factor against the average firm → high / average / low / negative leverage. Utilities ≈ +55% (stable, tangible); biotech ≈ −15% (risky, intangible, R&D)."]],
+    worked:"<b>Levered recap (Duff Beer).</b> All-equity V_U = $1bn, τ = 20%. Borrow D = $500m permanently and pay it out. PV(ITS) = 0.20×500 = $100m → V_L = $1.1bn. Equity falls to E_L = 1.1bn − 0.5bn = $600m, but shareholders also pocketed the $500m dividend → total $1.1bn. The $100m gain is the tax shield, funded by the government.",
+    formulas:["PV(ITS) = τ·D","V_L = V_U + τ·D","WACC = r_A − D/(D+E)·r_D·t"],
+    pitfalls:["Saying 'debt is better because it's cheaper' — ignores that leverage raises equity risk.","'Leverage boosts ROE so it adds value' — ROE rises only as compensation for higher risk.","Treating distress costs as relevant only in actual bankruptcy — they bite from the mere possibility."],
+    exam:["The checklist is an essay: name each factor (tax, cyclicality, assets, competition, employees, customers/suppliers, investment, discipline) and rate it for THIS business.","Every factor must tie to the company's business — generic statements score poorly.","Keep it precise; adding an incorrect claim costs marks."]}
+};
+
+/* Quant Templates (seed; expands in Phase 2). solve() routes through CFMath only. */
+const M=CFMath;
+const Templates={
+  tv:{topic:"compval",title:"Terminal value (perpetuity)",
+    gen(r){const g=pick(r,[0.01,0.015,0.02,0.025,0.03]);const wacc=Math.round((g+pick(r,[0.04,0.05,0.06,0.07,0.08]))*1000)/1000;return {f:ri(r,80,200),wacc,g};},
+    prompt(p){return `Final-year FCF = <b>${p.f}</b>. WACC = <b>${(p.wacc*100).toFixed(1)}%</b>, perpetual growth g = <b>${(p.g*100).toFixed(1)}%</b>. Compute the terminal value.`;},
+    solve(p){return M.tvPerp(p.f,p.wacc,p.g);},
+    steps(p){return [{l:"Perpetuity formula",ex:`TV = (1+g)·FCF / (r−g)`},{l:"Plug in",ex:`(1+${p.g})·${p.f} / (${p.wacc}−${p.g}) = ${M.r2(M.tvPerp(p.f,p.wacc,p.g))}`}];},
+    unit:"",tol:0.01},
+  capm:{topic:"wacc",title:"Cost of equity (CAPM)",
+    gen(r){return {rf:rf(r,2,4,1),beta:rf(r,0.6,2.2,2),mrp:rf(r,5,7,1)};},
+    prompt(p){return `Risk-free rate = <b>${p.rf}%</b>, equity beta = <b>${p.beta}</b>, market risk premium = <b>${p.mrp}%</b>. Compute the cost of equity (%).`;},
+    solve(p){return M.capm(p.rf,p.beta,p.mrp);},
+    steps(p){return [{l:"CAPM",ex:`r_E = r_F + β·MRP`},{l:"Plug in",ex:`${p.rf} + ${p.beta}×${p.mrp} = ${M.r2(M.capm(p.rf,p.beta,p.mrp))}%`}];},
+    unit:"%",tol:0.02},
+  unlever:{topic:"beyond",title:"Unlever a twin's beta",
+    gen(r){return {beta:rf(r,0.8,2.0,2),lev:pick(r,[0.2,0.25,0.5,0.6])};},
+    prompt(p){const dE=(p.lev/(1-p.lev));return `A twin has equity beta <b>${p.beta}</b> and leverage D/(D+E) = <b>${(p.lev*100).toFixed(0)}%</b> (so D/E = ${dE.toFixed(3)}). Assume β_D=0. Compute the asset beta.`;},
+    solve(p){const dE=p.lev/(1-p.lev);return M.unleverSafe(p.beta,dE);},
+    steps(p){const dE=p.lev/(1-p.lev);return [{l:"Convert to D/E",ex:`D/E = ${(p.lev).toFixed(2)}/(1−${(p.lev).toFixed(2)}) = ${dE.toFixed(3)}`},{l:"Unlever",ex:`β_A = β_E/(1+D/E) = ${p.beta}/(1+${dE.toFixed(3)}) = ${M.r2(M.unleverSafe(p.beta,dE))}`}];},
+    unit:"",tol:0.02},
+  fcf:{topic:"proj",title:"One-year Free Cash Flow",
+    gen(r){return {ebit:ri(r,100,500),t:rf(r,.1,.3,2),dep:ri(r,40,120),capx:ri(r,0,150),dnwc:ri(r,-20,60)};},
+    prompt(p){return `EBIT = <b>${p.ebit}</b>, tax rate = <b>${(p.t*100).toFixed(0)}%</b>, Depreciation = <b>${p.dep}</b>, CAPX = <b>${p.capx}</b>, ΔNWC = <b>${p.dnwc}</b>. Compute FCF.`;},
+    solve(p){return M.fcf(p.ebit,p.t,p.dep,p.capx,p.dnwc);},
+    steps(p){return [{l:"FCF formula",ex:`(1−t)·EBIT + Dep − CAPX − ΔNWC`},{l:"Plug in",ex:`${(1-p.t).toFixed(2)}×${p.ebit} + ${p.dep} − ${p.capx} − (${p.dnwc}) = ${M.r2(M.fcf(p.ebit,p.t,p.dep,p.capx,p.dnwc))}`}];},
+    unit:"",tol:0.02},
+  sust:{topic:"brick",title:"Sustainable growth rate",
+    gen(r){return {roe:rf(r,5,25,1),d:rf(r,0.3,0.7,2)};},
+    prompt(p){return `ROE = <b>${p.roe}%</b>, payout ratio d = <b>${(p.d*100).toFixed(0)}%</b>. Compute the sustainable growth rate g* (%).`;},
+    solve(p){return M.sustGrowth(p.d,p.roe);},
+    steps(p){return [{l:"Formula",ex:`g* = (1−d)·ROE`},{l:"Plug in",ex:`(1−${p.d})×${p.roe} = ${M.r2(M.sustGrowth(p.d,p.roe))}%`}];},
+    unit:"%",tol:0.02},
+  bridge:{topic:"compval",title:"Value bridge → share price",
+    gen(r){return {ev:ri(r,150,900),cash:ri(r,20,200),debt:ri(r,20,300),sh:ri(r,8,60)};},
+    prompt(p){return `Enterprise value = <b>${p.ev}</b>, Cash = <b>${p.cash}</b>, Debt = <b>${p.debt}</b>, Shares = <b>${p.sh}</b>. Compute the price per share.`;},
+    solve(p){return M.sharePrice(M.equityFromEV(p.ev,p.cash,p.debt),p.sh);},
+    steps(p){const e=M.equityFromEV(p.ev,p.cash,p.debt);return [{l:"Equity = EV + Cash − Debt",ex:`${p.ev}+${p.cash}−${p.debt} = ${e}`},{l:"Price = Equity / Shares",ex:`${e}/${p.sh} = ${M.r2(e/p.sh)}`}];},
+    unit:"",tol:0.02}
+};
+
+/* ---------- Expanded content (Phase 2) ---------- */
+Object.assign(TAKEAWAYS,{
+  proj:{session:"Session 1 · Project Valuation",
+    problem:"Is a project worth undertaking? Decide by the cash it actually generates for all investors, discounted for time and risk.",
+    approach:"Forecast unlevered free cash flows over the project's life, add a terminal value, discount at the cost of capital, and take NPV. Use NPV as the decision rule; treat IRR and payback as secondary checks.",
+    intuition:"Accounting earnings ≠ cash. We strip the income statement back to the economic cash available to debt and equity together: add back non-cash depreciation, remove investment in fixed assets (CAPX) and working capital, and ignore financing (interest). The tax we subtract is a 'fictitious' tax on EBIT — higher than the firm's actual tax bill because we don't deduct interest.",
+    concepts:[
+      ["Free cash flow","FCF = (1−t)·EBIT + Depreciation − CAPX − ΔNWC. Unlevered (to the whole firm), so no interest."],
+      ["NPV rule","Invest if NPV > 0 — the benchmark is zero at the right discount rate, not a company-set hurdle or past averages. Best method, but sensitive to the discount rate."],
+      ["IRR — limitations","The rate that sets NPV = 0. Ignores project scale (a $1M and a $100M project can share an IRR), can have multiple/again no solutions, and mis-ranks mutually exclusive projects."],
+      ["Payback — limitations","Years to recover the outlay. Ignores the time value of money and all cash after the cutoff."],
+      ["Net working capital","NWC = A/R + Inventory − A/P; only the CHANGE ΔNWC enters FCF. ↑A/P is a source of cash (raises FCF); ↑A/R or ↑inventory are uses (lower FCF)."],
+      ["PPE roll-forward","PPE_end = PPE_begin + CAPX − Depreciation — used to back out CAPX from a forecast PPE path."],
+      ["Terminal value","If the project ends, the liquidation value = Sale − t·(Sale − Book), then resolve NWC (collect A/R, pay A/P, sell inventory). If it continues, use the growing perpetuity."]],
+    worked:"<b>One-year FCF.</b> EBIT 300, t 25%, Dep 80, CAPX 120, ΔNWC 30 → FCF = 0.75×300 + 80 − 120 − 30 = <b>155</b>. <b>Liquidation:</b> sell assets for 1.2 (book 1.0), t 30%, no NWC → 1.2 − 0.30×(1.2−1.0) = <b>1.14</b>.",
+    formulas:["FCF = (1−t)·EBIT + Dep − CAPX − ΔNWC","NPV = −Inv + Σ FCF/(1+r)^t","Liquidation = Sale − t·(Sale − Book)"],
+    pitfalls:["Using net income as FCF (it nets out interest and uses actual tax).","Subtracting interest in FCF — financing is excluded.","Confusing NWC (a level) with ΔNWC (the change that enters FCF)."],
+    exam:["Sign of ΔNWC: ↑A/P raises FCF; ↑A/R / ↑inventory lower it.","Terminal value sits in the LAST year's cash flow and is discounted at the same r.","Tax on an asset sale is on the gain over book; a sale below book gives a tax credit."]},
+  paper:{session:"Session 2 · Paper Tiger (case)",
+    problem:"Should Paper Tiger acquire the Marsala cardboard plant? Build the plant's incremental free cash flows and take NPV.",
+    approach:"Forecast a sales-driven income statement and balance sheet (costs and NWC as % of sales; PPE via roll-forward), convert to FCF, and rigorously include only INCREMENTAL cash flows — those that exist because of the deal.",
+    intuition:"The acquisition is just a project. The only cash flows that matter are the differences between the world with the deal and the world without it. Many tempting numbers (sunk research, internal transfer prices, head-office allocations, loan interest) are either already spent, internal transfers that net to zero, or financing — none change the firm's total economic cash.",
+    concepts:[
+      ["Incremental rule","Count any cash flow generated WITH the project but not without it."],
+      ["Include — transaction & opportunity costs","Future legal/banker/consultant fees (before tax, then taxed); the opportunity cost of assets the firm already owns and would otherwise sell or rent."],
+      ["Exclude — sunk costs","Research already spent identifying the target is gone regardless — irrelevant."],
+      ["Exclude — transfer pricing","If the plant sells to Paper Tiger 1.5% below market, the plant's lost margin exactly equals the box factories' gain → nets to zero, no adjustment."],
+      ["Exclude — internal allocation","Head-office cost allocations are the same with or without the deal — not incremental."],
+      ["Exclude — financing","Interest on the acquisition loan is financing; FCF is unlevered. (We separately credit the tax shield only when doing financial policy.)"],
+      ["Sales-driven build","Costs and NWC scale with forecast sales; PPE = prior PPE + CAPX − Depreciation each year."]],
+    worked:"<b>EBITDA from sales:</b> sales 200, COGS 50%, opex 10% → EBITDA = 200×(1−0.6) = <b>80</b>. <b>NWC:</b> sales 100 with inv 20%, A/R 10%, A/P 5% → 20 + 10 − 5 = <b>25</b>; next-year ΔNWC enters FCF.",
+    formulas:["NWC = A/R + Inventory − A/P","PPE_end = PPE_begin + CAPX − Depreciation"],
+    pitfalls:["Adding the transfer-price 'benefit' (double counts — it cancels).","Including sunk research or HQ allocation.","Including interest because the deal is debt-financed."],
+    exam:["Be ready to classify a list of items as incremental or not — a guaranteed earner.","Owned/idle assets still carry an opportunity cost — include it.","Use FCF (unlevered) so the valuation is independent of financing."]},
+  compval:{session:"Session 4 · Company Valuation",
+    problem:"What is a whole company worth? Two complementary routes: discounted cash flow (DCF) and market multiples.",
+    approach:"DCF: forecast FCF, add a terminal value, discount everything at WACC to get enterprise value, then cross the 'value bridge' to equity and per-share value. Multiples: compute peers' price/fundamental ratios, average them, and apply to the target's fundamental.",
+    intuition:"DCF is intrinsic (what the cash flows are worth); multiples are relative (what the market pays for similar firms). DCF and the multiples both land on enterprise value or equity value — the value bridge (EV = Equity + Net Debt) lets you move between them in either direction.",
+    concepts:[
+      ["DCF = EV","Discounting unlevered FCF + terminal value at WACC gives ENTERPRISE value (assets), not market cap."],
+      ["Terminal value","TV = (1+g)·FCF/(r−g), using the POST-forecast growth g. Discount the TV back at the SAME WACC used for the explicit period (steady state isn't risk-free)."],
+      ["Value bridge","EV = market Equity + Net Debt ⇔ Equity = EV + Cash − Debt. Divide equity by shares for price."],
+      ["P/E multiple","Equity multiple: Price/EPS (= MktCap/Earnings). Apply peer-average P/E to the target's EPS to get an implied price. Use the LATEST price and share count."],
+      ["EV/EBITDA multiple","Enterprise multiple: per peer EV = MktCap + Debt − Cash, ratio = EV/EBITDA; apply the average to the target's EBITDA → implied EV, then value-bridge to equity."],
+      ["P/E vs EV/EBITDA","P/E values the stock (after leverage); EV/EBITDA values the whole firm (before leverage), so it's comparable across firms with different debt."],
+      ["Riskier ⇒ higher rate","A more volatile (systematic) cash-flow stream is discounted at a higher rate, lowering value."]],
+    worked:"<b>TV:</b> final FCF 100, WACC 6%, g 1% → 1.01×100/(0.06−0.01) = <b>2020</b>. <b>Value bridge:</b> EV 200, cash 50, debt 100, 10 shares → equity 200+50−100 = 150 → price <b>15</b>.",
+    formulas:["TV = (1+g)·FCF/(r−g)","EV = Equity + Net Debt","Implied EV = (EV/EBITDA)_peers × EBITDA_target"],
+    pitfalls:["Using in-forecast growth in the TV formula instead of the post-forecast g.","Discounting the TV at a different (e.g. lower) rate.","Treating the DCF result as market cap rather than enterprise value."],
+    exam:["State that DCF gives EV; then bridge to equity.","Multiples: always latest price/shares/cash/debt.","All-equity firm ⇒ WACC = r_E."]},
+  bouygues:{session:"Session 6 · Bouygues (case)",
+    problem:"A conglomerate (construction, telecom, media…) must value a project in ONE division. What discount rate should it use?",
+    approach:"Not the company-wide WACC. Identify pure-play twins in that division's business, average their unlevered betas, relever at the division's target leverage, and build a division-specific WACC (the six steps).",
+    intuition:"Different businesses carry different systematic (business) risk. A blended company WACC is too low for risky divisions and too high for safe ones, so using it everywhere systematically misallocates capital — overinvesting in risky divisions, underinvesting in safe ones.",
+    concepts:[
+      ["Company-wide WACC fallacy","Applying one firm-wide WACC to every project: overvalues high-β divisions, undervalues low-β divisions."],
+      ["Pure-play twins","Listed firms operating only in the target business (e.g. Orange & Iliad for a telecom project). Average their asset betas to estimate the division's β_A."],
+      ["Asset-beta drivers","Demand cyclicality (luxury, advertising → high) and operating leverage (high fixed costs amplify profit swings → high β_A). Same financing can still give different WACCs across industries."],
+      ["Divisional relevering","Relever the division's β_A at the division's (or project's) target leverage, not the parent's."],
+      ["Why not reject on the group WACC?","The group rate mixes unrelated businesses; a telecom project could well be positive-NPV at a telecom-appropriate rate even if negative at the group rate."]],
+    worked:"<b>Telecom twins.</b> Orange β_E 0.25, D/E 103% → β_A = 0.25/2.03 ≈ 0.12. Iliad β_E 0.40, D/E 95% → β_A ≈ 0.21. Average β_A ≈ 0.16; relever at 40% leverage (D/E=0.67): β_E = 0.16×1.67 ≈ 0.27 → r_E = 3.5% + 0.27×5.5% ≈ 5% → telecom WACC ≈ <b>4.1%</b>.",
+    formulas:["β_A = β_E/(1+D/E)","β_E = β_A·(1 + D/E)"],
+    pitfalls:["Reusing the parent's blended WACC for a division.","Picking twins that aren't pure-plays in the right business.","Relevering at the parent's leverage instead of the division's."],
+    exam:["Telecom project → telecom twins; show all six steps.","Explain WHY the company WACC is wrong (mixes business risks).","Tie a high asset beta to cyclicality and/or fixed costs."]},
+  ma:{session:"Session 7 · M&A",
+    problem:"Why do firms acquire, how do takeovers happen, and how much should an acquirer pay?",
+    approach:"Separate the reasons (good deal vs value creation), the process (friendly vs hostile, defenses), and the valuation (control value = standalone + control premium), and judge the payment terms (cash vs stock).",
+    intuition:"An acquirer can only justify a price above standalone value by what IT can add — synergies and improvements (the control premium). Accounting accretion (EPS going up) can happen with zero value created, so it is not a valuation test. How you pay also signals what you think your own shares are worth.",
+    concepts:[
+      ["Reasons to acquire","(1) Good deal: target underpriced or your stock/financing is cheap. (2) Value creation: operating/financial synergies, better management, improvements."],
+      ["Buyers","Strategic (same/related industry — horizontal or vertical) vs financial (PE funds, SPACs)."],
+      ["Friendly vs hostile","Friendly = negotiated with the board; hostile = offer straight to shareholders, often with a proxy fight to replace directors."],
+      ["Takeover defenses","Poison pill (others buy discounted shares once an acquirer passes ~20%, diluting it), staggered board (only part elected yearly), dual-class/controlling owners."],
+      ["Control valuation","Standalone value + control premium. Methods: DCF with quantified synergies; transaction (deal) EV/EBITDA multiples; public takeover premium vs the UNDISTURBED (pre-rumor) price."],
+      ["Cash vs stock","Cash = certain payment, acquirer bears synergy risk, signals shares undervalued. Stock = target shares the risk, signals shares may be overvalued (and earns worse long-run returns)."],
+      ["EPS-accretion fallacy","Buying a lower-P/E firm mechanically raises EPS with no value created — a red herring."]],
+    worked:"<b>EPS accretion.</b> A (EPS 2, P/E 20, price 40, 100k shares) buys B (EPS 2, P/E 10, MktCap 2.0M) in stock. Shares issued = 2.0M/40 = 50k → combined earnings 400k / 150k shares = EPS <b>2.67</b> (accretive) — yet no value was created; it's purely the P/E difference.",
+    formulas:["Shares issued = MktCap_target / Price_acquirer","Premium = (Deal − Undisturbed)/Undisturbed"],
+    pitfalls:["Judging a deal by EPS accretion.","Using the post-rumor price as the premium baseline.","Forgetting that paying with stock can signal overvaluation."],
+    exam:["'Accretive ⇒ good' is FALSE — explain why.","Use the undisturbed price for takeover premiums.","Control value includes synergies; standalone is just the benchmark."]},
+  brick:{session:"Sessions 9–10 · The Brick House (case)",
+    problem:"A booming business runs short of cash — a financial-policy failure, not an operating one. Diagnose and fix it.",
+    approach:"Read the KPIs (ROE/ROA/ROIC), build the sources & uses of funds, and compare actual asset growth to the sustainable growth rate to classify the firm as a cash cow or cash calf — then adjust payout/financing or growth.",
+    intuition:"Growth consumes cash (more receivables, inventory, PPE). If a firm grows faster than its retained earnings can fund, it must raise outside money or watch leverage climb. The sustainable growth rate is the speed at which a firm can grow with no change in leverage, payout, or equity issuance.",
+    concepts:[
+      ["ROE","Net Income / Book Equity. Useful but leverage-dependent: a high ROE can mean good operations OR just high debt."],
+      ["ROA","(NI + Interest)/Assets — closer to operating performance, roughly leverage-free."],
+      ["ROIC","EBIT·(1−t)/(Book Equity + Net Debt). The cleanest operating return; compare to WACC — ROIC > WACC means the business creates economic value."],
+      ["Sources & uses","↑asset or ↓liability = a USE of funds; ↓asset or ↑liability = a SOURCE. Reconciles where cash came from and went."],
+      ["Sustainable growth","g* = (1−d)·ROE, where d = payout ratio. The growth rate that keeps leverage, payout and share count fixed."],
+      ["Cash cow vs cash calf","Compare actual asset growth g to g*. g < g* = cash cow (generates surplus; leverage falls unless it pays out/buys back more). g > g* = cash calf (needs outside funds; leverage rises unless it issues equity or cuts payout)."],
+      ["ΔEquity","ΔEquity = Net Income − Dividends − Buybacks + Issuance — the book-equity roll-forward."]],
+    worked:"<b>Cash calf check.</b> NI 14.3, equity 224.2 → ROE 6.38%; payout 50% → g* = 0.5×6.38% = <b>3.19%</b>. Asset growth (510.8−450.4)/450.4 = <b>13.4%</b> ≫ g* → cash calf: leverage will rise unless it issues equity or cuts dividends.",
+    formulas:["g* = (1−d)·ROE","ΔEquity = NI − Div − Buyback + Issuance"],
+    pitfalls:["Reading a high ROE as strong operations when it's really leverage.","Comparing growth to ROE instead of to g*.","If g > g*, mistakenly paying MORE dividends (worsens the gap)."],
+    exam:["Compare actual asset growth to g* to label cow/calf and state the consequence.","Use ROIC vs WACC for value creation, not ROE.","If growth exceeds g*, retain more / raise funds; don't increase payout."]},
+  ust:{session:"Session 12 · UST (case)",
+    problem:"UST is a hugely profitable, low-debt near-monopoly. Should such a cash cow take on leverage?",
+    approach:"Run the target-leverage checklist. With a large, stable, predictable tax bill and low business risk, the interest tax shield is valuable and distress risk is low → lever up, typically via a leveraged recapitalization.",
+    intuition:"A firm with reliable profits 'wastes' a valuable tax subsidy by staying unlevered. Adding debt converts taxable income into tax-shielded interest, and the value of that shield (≈ τ·D) flows to shareholders. For a stable business the downside (distress) is small, so the trade-off favors more debt.",
+    concepts:[
+      ["UST's profile","Smokeless tobacco, ~77% share, slow-growing, advertising ban limits competition, exceptional and stable margins, ROE near 100% — a textbook cash cow with little debt."],
+      ["Strong ITS case","Large, predictable taxable income → the interest tax shield is highly valuable. PV(ITS) ≈ τ·D for permanent debt."],
+      ["Low distress risk","Stable, predictable cash flows and limited competition mean a low probability and cost of financial distress."],
+      ["Leveraged recap","Borrow and use the proceeds to repurchase shares (or pay a special dividend): raises D, shrinks E, and captures the tax shield. V_new = V_old + τ·D."],
+      ["Who benefits","Shareholders capture the tax shield; the 'extra' value is a government subsidy."]],
+    worked:"<b>Recap value.</b> Issue $1bn of debt to buy back shares at τ = 38% → value created ≈ τ·D = 0.38×1 = <b>$0.38bn</b>, added to firm value and accruing to shareholders.",
+    formulas:["PV(ITS) = τ·D","V_L = V_U + τ·D"],
+    pitfalls:["Arguing UST shouldn't lever because 'debt is risky' — its business is unusually safe.","Forgetting the ITS needs profits to be valuable (UST has plenty).","Ignoring that the recap mechanism is borrow-then-buy-back."],
+    exam:["Tie the strong ITS to UST's large, stable tax bill.","Note the low distress risk from stable cash flows.","Explain the leveraged recap and that the shield accrues to equity."]},
+  loewen:{session:"Session 13 · Loewen (case)",
+    problem:"An aggressive debt-funded roll-up has tipped into financial distress. Diagnose the causes and decide what to do now.",
+    approach:"Assess the business and distress (bad luck / bad business / bad policy), check for debt overhang, and set target leverage by lifecycle stage; weigh remedies (raise funds, sell assets, restructure).",
+    intuition:"Loewen's strategy (buying up fragmented funeral homes) needs constant access to capital. With negative operating cash flow and ballooning leverage, risky debt creates an overhang: new positive-NPV deals would mostly benefit existing creditors, so equity won't fund them — starving the very strategy that justified the debt.",
+    concepts:[
+      ["Distress signals","Negative operating cash flow for several years, leverage blown up, liquidity plunged; higher leverage than peers."],
+      ["Debt overhang","Can't raise equity for positive-NPV investments because gains flow to existing creditors — a real cost of being over-levered."],
+      ["Lifecycle leverage","Target leverage isn't fixed: an active consolidation phase (high investment, competition) argues for MODERATE leverage; a steady state could support more."],
+      ["Diagnosis framework","Distress can come from bad luck, a bad business, or bad financial policy — often all three; the cause shapes the remedy."],
+      ["Bankruptcy basics","Chapter 7 = liquidation; Chapter 11 = reorganize while continuing to operate. Senior debt is paid before junior debt."],
+      ["Remedies","Raise funds, sell assets, or restructure debt — each with pros/cons; distressed firms tend to delay action too long, hoping for a rebound."]],
+    formulas:["—"],formulaNote:"Conceptual session — reuse the ITS, distress and overhang ideas from Capital Structure.",
+    pitfalls:["Recommending more debt for the tax shield when the firm is unprofitable/distressed.","Ignoring overhang when asking why it can't just raise equity.","Assuming one target leverage for all lifecycle stages."],
+    exam:["For an unprofitable distressed consolidator, leverage should be moderate (not maxed for ITS).","'Grow externally' = grow via M&A.","Know Ch.7 vs Ch.11 and senior vs junior debt."]},
+  mispricing:{session:"Session 14 · Security Mispricing",
+    problem:"When managers know more than the market (asymmetric information), does the choice of financing matter — and how does the market react?",
+    approach:"Model the information gap: the market prices at expected value, creating mispricing; adverse selection means issuers are disproportionately overvalued, so the market discounts issuance. This generates the pecking order and issuance/payout signals.",
+    intuition:"If only you know your firm is undervalued, issuing equity sells cheap shares and hurts existing owners — so you'd rather use internal cash or debt. The market knows firms behave this way, so an equity issue is read as 'probably overvalued,' pushing the price down. Debt is shielded from this because lenders mostly care about the downside, not the upside you disagree about.",
+    concepts:[
+      ["Mispricing","Market sets price at expected value across states; managers know the true state → shares are over- or under-priced relative to the truth."],
+      ["Adverse selection","Overvalued firms are keener to issue equity, so a rational market marks issuance down — even good firms get tarred."],
+      ["Underinvestment from underpricing","An undervalued firm may PASS on a positive-NPV project rather than issue cheap equity to fund it (like debt overhang, but driven by information, not debt)."],
+      ["Pecking order","Preferred financing: retained earnings > debt > equity (least information-sensitive first)."],
+      ["Debt less sensitive","Lenders care about the probability of repayment (downside), not the upside, so debt suffers far less mispricing than equity."],
+      ["Signaling","Equity issuance = negative signal; dividends and buybacks = positive signals. 'Cheap talk' (just announcing good news) doesn't work — every firm would claim it."]],
+    worked:"<b>BioPeck.</b> Market value 125 (½×50 + ½×200), 10 shares → price 12.5; manager knows true value 200 → 20/share, so it's underpriced by <b>7.5</b>. To fund a project it must issue shares at p = (125+65−50)/10 = <b>14</b> < 20 — issuing cheap equity can destroy more value than the project's NPV, so it may skip it and prefer debt.",
+    formulas:["(N+n)·p = V_market + ΔProject ;  n·p = Raise"],
+    pitfalls:["Saying equity issuance drops the price 'because of dilution' — the driver is the signal.","Ignoring that debt avoids most of the information problem.","Getting the pecking order backwards."],
+    exam:["Explain the price drop on issuance via adverse selection/signaling.","Link the example to the pecking order.","Note an undervalued firm may rationally skip a good project rather than issue cheap equity."]},
+  infineon:{session:"Session 15 · Infineon (case)",
+    problem:"A highly cyclical, cash-rich semiconductor firm: what capital structure and payout policy are appropriate?",
+    approach:"Run the checklist on NET debt: weak tax shield + high distress risk argue for low or negative leverage (cash > debt). Then decide payout, balancing business reasons to retain against signaling reasons to distribute.",
+    intuition:"Chip demand swings violently and fixed costs are high, so profits are volatile and distress is costly — the opposite of UST. With a minimal tax bill, the tax shield gives little reason to borrow, so holding a cash buffer (negative net debt) is prudent. Payout then turns on whether the cash earns more inside the firm than its cost of capital.",
+    concepts:[
+      ["High business risk","Cyclical demand + high fixed costs (operating leverage) → high asset beta and high cost of financial distress."],
+      ["Weak ITS","A minimal/volatile tax bill means the interest tax shield is a weak reason to lever up."],
+      ["Negative net leverage","Recommendation: hold cash > debt as a buffer against the cycle (net debt < 0)."],
+      ["Payout rule","Return cash if its return inside the firm is below the cost of capital; retain it if there are good investments or a need for a cyclical buffer."],
+      ["Dividend vs buyback mechanics","A special dividend lowers the share price by the per-share dividend; a fair-value buyback leaves the price unchanged (fewer shares, less cash)."],
+      ["Signaling","Both dividends and buybacks signal confidence; CFOs avoid CUTTING dividends because cuts signal deteriorating prospects (dividends are sticky)."]],
+    worked:"<b>Payout mechanics.</b> EV 4bn, cash 2bn, no debt, 100m shares → equity 6bn, price 60. A $10 special dividend → price falls to <b>50</b>. A $1bn buyback at 60 retires ~16.7m shares; price stays <b>60</b> (cash down 1bn, shares down).",
+    formulas:["Special dividend: price drops by div/share","Fair buyback: price unchanged"],
+    pitfalls:["'Extra cash ⇒ always pay dividends' — depends on investment opportunities.","Recommending leverage for the tax shield when the tax bill is minimal.","Treating a buyback like a dividend for the share price."],
+    exam:["Use NET debt; recommend negative leverage for a cyclical cash-rich firm.","Pay out only if return on cash < cost of capital.","Both dividends and buybacks are positive signals; cuts are negative."]}
+});
+
+Object.assign(MCQS,{
+  proj:(MCQS.proj||[]).concat([
+    {q:"One drawback of IRR is that it…",options:[{t:"doesn't reflect the scale of a project",correct:true,why:"A $1M and a $100M project can share an IRR; NPV captures scale."},{t:"always exceeds the NPV decision",correct:false,why:"They're different metrics, not ordered like that."},{t:"requires a hurdle rate set by comparables",correct:false,why:"That describes a hurdle-rate convention, not an IRR drawback."}]},
+    {q:"NPV investment criterion:",options:[{t:"Invest if NPV > 0",correct:true,why:"Positive NPV adds value at the project's cost of capital."},{t:"Invest if NPV beats past projects' average",correct:false,why:"The benchmark is zero at the right discount rate, not history."},{t:"Invest if NPV exceeds a company-set hurdle",correct:false,why:"NPV already embeds the hurdle via the discount rate."}]},
+    {q:"A firm already owns a lab needed for a project. In the project value you should…",options:[{t:"include the lab's value (opportunity cost)",correct:true,why:"Using it forgoes selling/renting it — a real incremental cost."},{t:"ignore it because it's already owned",correct:false,why:"Ownership doesn't remove the opportunity cost."}]}
+  ]),
+  paper:[
+    {q:"Which cost belongs in the Marsala NPV?",options:[{t:"Future transaction/legal fees of the deal",correct:true,why:"Incremental — incurred only if you do the deal (after tax)."},{t:"Research already spent identifying the target",correct:false,why:"Sunk — not incremental."},{t:"Interest on the acquisition loan",correct:false,why:"Financing is excluded from unlevered FCF."},{t:"Internal HQ cost allocation",correct:false,why:"Same with or without the deal — not incremental."}]},
+    {q:"Marsala would sell to Paper Tiger 15% below market (transfer price). In the NPV you should…",options:[{t:"make no adjustment",correct:true,why:"The plant's lost margin equals the buyer's gain — it cancels."},{t:"add the 15% as a benefit",correct:false,why:"That double-counts; the cost to the plant offsets it."}]}
+  ],
+  compval:[
+    {q:"P/E vs EV/EBITDA — the key difference?",options:[{t:"P/E values the stock; EV/EBITDA values the whole firm",correct:true,why:"P/E is an equity multiple; EV/EBITDA is an enterprise multiple."},{t:"Only EV/EBITDA works for private firms",correct:false,why:"Both need peer ratios; neither is restricted to private firms."}]},
+    {q:"Discounting the explicit FCFs plus the terminal value gives…",options:[{t:"enterprise value",correct:true,why:"FCFF discounted at WACC yields EV; subtract net debt for equity."},{t:"market capitalization",correct:false,why:"That's after the value bridge."},{t:"book value of assets",correct:false,why:"DCF is a market/intrinsic value, not book."}]},
+    {q:"The terminal value (perpetuity) is…",options:[{t:"decreasing in r, increasing in g",correct:true,why:"TV = (1+g)FCF/(r−g): bigger r shrinks it, bigger g grows it."},{t:"increasing in r, decreasing in g",correct:false,why:"Backwards — r is in the denominator's positive term."}]}
+  ],
+  beyond:[
+    {q:"What is the effect of more leverage on the pre-tax WACC (r_A)?",options:[{t:"No effect",correct:true,why:"MM: r_A reflects asset risk, unchanged by financing."},{t:"It decreases",correct:false,why:"After-tax WACC falls via the tax shield, but pre-tax r_A is flat."},{t:"It increases",correct:false,why:"Cheaper-debt weight rises but r_D and r_E also rise — net zero."}]},
+    {q:"Cost of equity rises with leverage because…",options:[{t:"equity payoffs are exposed to more risk (paid after debt)",correct:true,why:"Higher β_E from leverage → higher r_E via CAPM."},{t:"equity is just more expensive than debt",correct:false,why:"That's not the mechanism; risk is."}]},
+    {q:"Why does after-tax WACC decrease with leverage?",options:[{t:"the interest tax shield",correct:true,why:"WACC = r_A − D/(D+E)·r_D·t; only the tax term lowers it."},{t:"debt is cheaper than equity",correct:false,why:"The 'cheap debt' intuition is the classic fallacy."}]}
+  ],
+  bouygues:[
+    {q:"A conglomerate uses its company-wide WACC to value a high-beta division. Result?",options:[{t:"It overvalues the investment",correct:true,why:"The blended WACC is too low for a riskier division."},{t:"It undervalues the investment",correct:false,why:"Too-low a rate inflates, not deflates, the value."}]},
+    {q:"Why does the advertising industry have a higher asset beta than food?",options:[{t:"ad spend is discretionary and cut in downturns; food is non-discretionary",correct:true,why:"Cyclical demand → higher systematic risk."},{t:"advertising uses more debt",correct:false,why:"Asset beta is about business risk, not financing."}]}
+  ],
+  ma:[
+    {q:"Why might target shareholders prefer cash over stock?",options:[{t:"a fixed upfront payment avoids synergy-realization risk",correct:true,why:"Cash gives certainty; stock shares the deal's risk."},{t:"cash guarantees upside in the merged firm",correct:false,why:"That's the opposite — stock gives upside exposure."}]},
+    {q:"Acquiring with stock can signal that…",options:[{t:"the acquirer thinks its own shares are overvalued",correct:true,why:"Paying with 'expensive' shares is attractive — a negative signal (worse long-run returns)."},{t:"the acquirer thinks the target is undervalued",correct:false,why:"That's not what the payment choice signals."}]},
+    {q:"A staggered board is an effective defense because…",options:[{t:"only part of the board is up for election each year, slowing a takeover",correct:true,why:"It takes several cycles to gain board control."},{t:"it lets management veto any bid",correct:false,why:"Boards have fiduciary duties; no outright veto."}]},
+    {q:"'Go with M&A that increases EPS (accretive deals)' — good rule?",options:[{t:"False",correct:true,why:"EPS accretion can occur with zero value created (buying a lower-P/E firm)."},{t:"True",correct:false,why:"EPS accretion is mechanical, not a value test."}]}
+  ],
+  brick:[
+    {q:"Which return should be compared to WACC to judge value creation?",options:[{t:"ROIC",correct:true,why:"ROIC is the operating return on invested capital; >WACC creates value."},{t:"ROE",correct:false,why:"ROE is distorted by leverage."},{t:"ROA",correct:false,why:"ROA doesn't net out working-capital financing like ROIC does."}]},
+    {q:"Main drawback of ROE as a performance measure?",options:[{t:"it depends heavily on leverage",correct:true,why:"High ROE can just mean high leverage, not good operations."},{t:"it ignores net income",correct:false,why:"ROE is built on net income."}]},
+    {q:"A firm grows faster than g* and doesn't want rising leverage. It should…",options:[{t:"pay fewer dividends (retain more) or raise funds",correct:true,why:"Faster-than-sustainable growth needs more internal equity."},{t:"pay more dividends",correct:false,why:"That worsens the funding gap and raises leverage."}]}
+  ],
+  capstruct:(MCQS.capstruct||[]).concat([
+    {q:"Which is a cost of financial distress?",options:[{t:"customers may be reluctant to buy",correct:true,why:"An indirect distress cost from possible default."},{t:"interest expense on debt",correct:false,why:"Interest is a normal financing cost, not a distress cost."},{t:"equityholders get nothing in default",correct:false,why:"That's limited liability, not a distress cost to firm value."}]},
+    {q:"The debt overhang problem is that firms with risky debt may…",options:[{t:"underinvest (skip good projects)",correct:true,why:"Gains accrue to existing creditors, so equity won't fund them."},{t:"overinvest",correct:false,why:"That's more like empire-building/risk-shifting, not overhang."}]},
+    {q:"If the Modigliani-Miller assumptions hold, more debt means the cost of capital…",options:[{t:"does not change",correct:true,why:"Capital structure is irrelevant under MM."},{t:"is lower",correct:false,why:"Only with a friction like taxes."}]},
+    {q:"Why does debt discipline management?",options:[{t:"debt payments reduce free cash available to waste",correct:true,why:"Less discretionary cash curbs slack/empire-building."},{t:"debt is expensive",correct:false,why:"Cost isn't the disciplining mechanism."}]}
+  ]),
+  ust:[
+    {q:"If a company isn't profitable, the interest tax shield is…",options:[{t:"not very valuable",correct:true,why:"No taxable income to shield."},{t:"more valuable",correct:false,why:"ITS needs profits to deduct against."}]},
+    {q:"What reduces the likelihood of financial distress?",options:[{t:"stable, predictable cash flows",correct:true,why:"Less chance of missing debt payments."},{t:"high fixed costs",correct:false,why:"They make profits more volatile."},{t:"high leverage",correct:false,why:"That raises distress risk."}]}
+  ],
+  loewen:[
+    {q:"Chapter 7 vs Chapter 11 bankruptcy?",options:[{t:"Ch.7 liquidates; Ch.11 reorganizes and keeps operating",correct:true,why:"Ch.11 is a restructuring while continuing the business."},{t:"Ch.11 liquidates; Ch.7 reorganizes",correct:false,why:"Reversed."}]},
+    {q:"For a distressed, unprofitable consolidator, the right leverage is generally…",options:[{t:"moderate (lower than in steady state)",correct:true,why:"Distress risk + investment needs argue against high leverage now."},{t:"as high as possible for the tax shield",correct:false,why:"Weak ITS when unprofitable; high distress cost."}]}
+  ],
+  mispricing:(MCQS.mispricing||[]).concat([
+    {q:"Pecking order theory ranks financing as…",options:[{t:"retained earnings > debt > equity",correct:true,why:"Least information-sensitive sources first."},{t:"debt > equity > retained earnings",correct:false,why:"Internal funds come first."}]},
+    {q:"A firm MORE optimistic than the market should prefer…",options:[{t:"debt",correct:true,why:"Avoid issuing equity it considers underpriced."},{t:"equity",correct:false,why:"Issuing underpriced equity hurts existing holders."}]},
+    {q:"Debt is less affected by asymmetric information because…",options:[{t:"lenders mainly care about downside/default, not upside",correct:true,why:"Disagreement about upside doesn't move safe-ish debt value."},{t:"debt is tax-deductible",correct:false,why:"True but unrelated to info sensitivity."}]}
+  ]),
+  infineon:[
+    {q:"'If a company has extra cash it should always pay dividends.' —",options:[{t:"False",correct:true,why:"Pay out only if it lacks good uses (return on cash < cost of capital)."},{t:"True",correct:false,why:"Depends on investment opportunities."}]},
+    {q:"A special dividend of $10/share will…",options:[{t:"lower the share price by about $10",correct:true,why:"Cash leaves the firm; value per share falls by the dividend."},{t:"leave the price unchanged",correct:false,why:"That's a fair-value buyback, not a dividend."}]},
+    {q:"Why do CFOs avoid cutting dividends?",options:[{t:"it signals deteriorating confidence about the future",correct:true,why:"Dividends are sticky; cuts are read as bad news."},{t:"it reduces the tax shield",correct:false,why:"Dividends aren't tax-shielded like interest."}]}
+  ]
+});
+
+Object.assign(MCQS,{
+  proj:(MCQS.proj||[]).concat([
+    {q:"Should the change in Accounts Receivable (ΔA/R) be added or subtracted in the FCF formula?",options:[{t:"Subtracted",correct:true,why:"Rising A/R increases NWC, and FCF subtracts ΔNWC."},{t:"Added",correct:false,why:"Receivables tie up cash; adding would double-count."}]},
+    {q:"Which is the correct Free Cash Flow formula?",options:[{t:"(1−t)·EBIT + Dep − CAPX − ΔNWC",correct:true,why:"Tax on EBIT, add back depreciation, subtract investment."},{t:"(1−t)·NI + Dep − CAPX − ΔNWC",correct:false,why:"NI already nets interest and uses actual tax — wrong base."},{t:"(1−t)·EBIT − Dep − CAPX − ΔNWC",correct:false,why:"Depreciation is added back, not subtracted."}]},
+    {q:"A project invests on 31 Dec 2025 and liquidates on 31 Dec 2030. Where does the terminal value go in the NPV?",options:[{t:"Into the year-5 cash flow, discounted by (1+r)^5",correct:true,why:"TV is received at liquidation (year 5), same timing as C5."},{t:"Discounted by (1+r)^6",correct:false,why:"It arrives in year 5, not 6."},{t:"Added undiscounted",correct:false,why:"Future amounts must be discounted."}]},
+    {q:"True or false: without taxes and depreciation, Net Income could be used directly as FCF.",options:[{t:"False",correct:true,why:"NI still nets out interest and ignores CAPX and ΔNWC."},{t:"True",correct:false,why:"Interest, CAPX and ΔNWC still make them differ."}]}
+  ]),
+  paper:(MCQS.paper||[]).concat([
+    {q:"Deal legal/banker fees of $8m (pre-tax) — include in the NPV?",options:[{t:"True — incremental (after tax)",correct:true,why:"Incurred only if the deal happens."},{t:"False",correct:false,why:"A direct incremental cost of the transaction."}]},
+    {q:"Allocating 3% of existing HQ costs to the new plant — include?",options:[{t:"False — internal allocation, not incremental",correct:true,why:"HQ costs are unchanged with or without the deal."},{t:"True",correct:false,why:"It doesn't change total firm cash flow."}]},
+    {q:"Sell assets for $60m (book value $70m), tax 10%. Tax effect?",options:[{t:"A tax credit of $1m",correct:true,why:"Loss of 10 × 10% = 1 credit (sold below book)."},{t:"Owe $1m of tax",correct:false,why:"There's a loss, not a gain."},{t:"Zero",correct:false,why:"The loss generates a tax shield."}]},
+    {q:"Why value a project on FCF (as if 100% equity) even when partly debt-financed?",options:[{t:"To value it independent of financing policy",correct:true,why:"Separates the investment decision from financing."},{t:"Because most projects use little debt",correct:false,why:"Not the reason — it's about isolating operating value."}]}
+  ]),
+  wacc:(MCQS.wacc||[]).concat([
+    {q:"Why use the after-tax cost of debt in WACC?",options:[{t:"Interest is deducted before tax, shielding income",correct:true,why:"Each €1 of interest saves t in tax → costs (1−t)."},{t:"Equity holders pay little tax",correct:false,why:"WACC is about the firm's costs, not investors' personal tax."}]},
+    {q:"Which is the correct WACC formula?",options:[{t:"D/(D+E)·r_D·(1−t) + E/(D+E)·r_E",correct:true,why:"After-tax debt plus equity, market-weighted."},{t:"D/(D+E)·r_D + E/(D+E)·r_E·(1−t)",correct:false,why:"The (1−t) belongs on debt, not equity."}]},
+    {q:"For the WACC weights, the relevant measure of equity is…",options:[{t:"Market value of equity",correct:true,why:"Reflects current value incl. intangibles."},{t:"Book value of equity",correct:false,why:"Historical, ignores market value."}]},
+    {q:"True or false: per CAPM, a more volatile stock always has a higher expected return.",options:[{t:"False",correct:true,why:"Only systematic risk (beta) is priced; idiosyncratic volatility isn't."},{t:"True",correct:false,why:"Diversifiable risk isn't rewarded."}]},
+    {q:"Estimate cost of debt from a rating: AA index yields 5.0% (gov 4.6%, BBB 5.7%). Cost of debt for an AA firm?",options:[{t:"5.0%",correct:true,why:"Use the yield for the firm's own rating."},{t:"4.6%",correct:false,why:"That's risk-free, ignoring the spread."},{t:"5.7%",correct:false,why:"That's the BBB yield — wrong rating."}]},
+    {q:"Best 'twin' for a pure cardboard plant?",options:[{t:"A comparable cardboard maker's equity (then unlever)",correct:true,why:"Match business risk via a pure-play's equity beta."},{t:"An index of AAA bonds",correct:false,why:"Bonds miss the project's business risk."},{t:"The acquirer's own equity",correct:false,why:"Different business mix."}]}
+  ]),
+  compval:(MCQS.compval||[]).concat([
+    {q:"True or false: for an all-equity firm, WACC equals the cost of equity.",options:[{t:"True",correct:true,why:"With no debt weight, WACC = r_E."},{t:"False",correct:false,why:"The debt term vanishes at zero debt."}]},
+    {q:"Purpose of the value bridge?",options:[{t:"Connect enterprise value to equity value / stock price",correct:true,why:"EV = Equity + Net Debt links them."},{t:"Convert DCF into multiples",correct:false,why:"Unrelated."},{t:"Remove the effect of leverage",correct:false,why:"That's un/relevering beta."}]},
+    {q:"The enterprise value formula is…",options:[{t:"EV = Market Equity + Debt − Cash",correct:true,why:"Equity plus net debt."},{t:"EV = Book Equity − Cash + Debt",correct:false,why:"Use market, not book, equity."},{t:"EV = Debt + Cash − Equity",correct:false,why:"Signs wrong."}]},
+    {q:"Project A pays 100/yr for sure; Project B pays 200 or 0 on a coin flip. Which needs a higher discount rate (if risk is systematic)?",options:[{t:"Project B",correct:true,why:"More systematic risk → higher required return."},{t:"Project A",correct:false,why:"A is the safe one."},{t:"Same",correct:false,why:"Only if B's risk were purely diversifiable."}]},
+    {q:"When discounting the terminal value you should use…",options:[{t:"The same rate as the explicit period",correct:true,why:"Steady state still carries systematic risk."},{t:"The risk-free rate",correct:false,why:"Business risk persists in perpetuity."},{t:"A higher rate for uncertainty",correct:false,why:"No basis to bump it at the horizon."}]},
+    {q:"In TV = (1+g)·FCF/(r−g), what is g?",options:[{t:"Growth of free cash flows beyond the forecast",correct:true,why:"Perpetuity FCF growth."},{t:"The discount rate",correct:false,why:"That's r."},{t:"The industry growth rate",correct:false,why:"It's the firm's FCF growth."}]}
+  ]),
+  beyond:(MCQS.beyond||[]).concat([
+    {q:"Two firms in the same industry show slightly different ASSET betas. Why?",options:[{t:"Slightly different products / business mix",correct:true,why:"Asset beta reflects business risk, which varies within an industry."},{t:"Different leverage",correct:false,why:"Leverage affects equity beta, not asset beta."}]},
+    {q:"The unlevered (asset) beta captures…",options:[{t:"How the firm's enterprise value moves with the market",correct:true,why:"Pure business risk, independent of financing."},{t:"How the firm's debt moves with the market",correct:false,why:"That's debt beta."}]},
+    {q:"An alternative way to write WACC is…",options:[{t:"r_A − D/(D+E)·r_D·t",correct:true,why:"Pre-tax WACC minus the tax-shield term."},{t:"r_A + D/(D+E)·r_D·t",correct:false,why:"The tax shield lowers WACC → minus."}]},
+    {q:"If a firm with positive asset beta increases leverage, its cost of equity…",options:[{t:"increases",correct:true,why:"Higher β_E → higher r_E."},{t:"decreases",correct:false,why:"Leverage adds equity risk."},{t:"is unchanged",correct:false,why:"Only if β_A were zero."}]}
+  ]),
+  bouygues:(MCQS.bouygues||[]).concat([
+    {q:"Using the company-wide WACC to value an investment in a LOW-WACC division would…",options:[{t:"undervalue it",correct:true,why:"Too-high a rate deflates a safe division's value."},{t:"overvalue it",correct:false,why:"That's the high-risk-division case."}]},
+    {q:"Why do high fixed costs raise a firm's asset beta?",options:[{t:"They make profits move more with the cycle",correct:true,why:"Operating leverage amplifies profit swings."},{t:"They imply more financial leverage",correct:false,why:"Operating ≠ financial leverage."}]}
+  ]),
+  ma:(MCQS.ma||[]).concat([
+    {q:"Why use the undisturbed stock price for a takeover premium?",options:[{t:"A clean baseline before rumors moved the price",correct:true,why:"Post-rumor prices already embed deal expectations."},{t:"It maximizes the measured premium",correct:false,why:"Accuracy, not inflation, is the goal."}]},
+    {q:"What is a proxy fight?",options:[{t:"Convincing shareholders to replace board members",correct:true,why:"Used to unseat a resisting board."},{t:"A dispute between two bidders",correct:false,why:"That's a bidding contest."}]},
+    {q:"Which reason to acquire is LEAST relevant to a financial (PE) buyer vs a strategic buyer?",options:[{t:"Operating synergies",correct:true,why:"Synergies come from related operations a strategic buyer already has."},{t:"Buying cheap",correct:false,why:"Financial buyers care a lot about price."},{t:"Improving the target",correct:false,why:"PE actively improves targets."}]},
+    {q:"What is a poison pill?",options:[{t:"Other shareholders may buy discounted shares once an acquirer passes a threshold",correct:true,why:"Dilutes the hostile acquirer's stake."},{t:"The target's managers resign en masse",correct:false,why:"Not a poison pill."}]}
+  ]),
+  brick:(MCQS.brick||[]).concat([
+    {q:"Correct formula for the change in book equity?",options:[{t:"ΔEquity = NI − Dividends + Issuance − Buybacks",correct:true,why:"Retained earnings plus issuance minus buybacks."},{t:"ΔEquity = NI + Dividends + Issuance − Buybacks",correct:false,why:"Dividends reduce equity."}]},
+    {q:"True or false: for a levered firm, ROE is always higher than ROA.",options:[{t:"False",correct:true,why:"If returns fall below the cost of debt, leverage can lower ROE."},{t:"True",correct:false,why:"Not guaranteed — depends on returns vs cost of debt."}]},
+    {q:"What happens to a cash cow (g < g*)?",options:[{t:"Leverage falls unless it pays out more / buys back",correct:true,why:"It generates surplus cash."},{t:"Leverage rises unless it issues equity",correct:false,why:"That's a cash calf."}]},
+    {q:"A firm grows faster than g* and wants stable leverage. It should…",options:[{t:"retain more (fewer dividends) or raise funds",correct:true,why:"Above-sustainable growth needs more equity."},{t:"increase dividends",correct:false,why:"That worsens the funding gap."}]}
+  ]),
+  capstruct:(MCQS.capstruct||[]).concat([
+    {q:"A firm owes 100 next year. Strategy 1 pays 100 for sure; Strategy 2 pays 80 or 110 (50/50). Which do shareholders prefer near distress?",options:[{t:"Strategy 2 (the gamble)",correct:true,why:"Risk-shifting: limited liability makes the upside attractive to equity."},{t:"Strategy 1",correct:false,why:"Equity captures upside but not the full downside."}]},
+    {q:"Which is NOT a cost of financial distress?",options:[{t:"Lower ROE from higher risk",correct:true,why:"A risk effect, not a distress cost to firm value."},{t:"Employees jumping ship",correct:false,why:"A real indirect distress cost."},{t:"Suppliers demanding up-front payment",correct:false,why:"A real indirect distress cost."}]},
+    {q:"Which factor favors MORE debt?",options:[{t:"Low industry (asset) beta",correct:true,why:"Low business risk → lower distress risk → supports debt."},{t:"Strong competition",correct:false,why:"Rivals exploit distress → less debt."},{t:"Intangible assets",correct:false,why:"Hard to recoup in distress → less debt."}]}
+  ]),
+  ust:(MCQS.ust||[]).concat([
+    {q:"Key benefit of debt for a highly profitable firm like UST?",options:[{t:"Interest tax shield",correct:true,why:"Large, stable profits make the shield valuable."},{t:"Lower dividend payout",correct:false,why:"Not a benefit of debt itself."}]},
+    {q:"Which asset trait reduces the attractiveness of high leverage?",options:[{t:"Intangible or firm-specific assets",correct:true,why:"Hard to recoup value in liquidation."},{t:"Easily sold assets",correct:false,why:"Liquid assets support more debt."}]},
+    {q:"Which would increase a firm's sustainable growth rate g*?",options:[{t:"Higher ROE",correct:true,why:"g* = (1−d)·ROE."},{t:"Higher dividend payout",correct:false,why:"Higher payout lowers g*."}]},
+    {q:"True or false: negative book equity means a firm is automatically insolvent and must file for bankruptcy.",options:[{t:"False",correct:true,why:"Book equity is accounting; solvency is about cash/market value."},{t:"True",correct:false,why:"Firms can have negative book equity and operate."}]}
+  ]),
+  loewen:(MCQS.loewen||[]).concat([
+    {q:"Difference between senior and junior debt?",options:[{t:"Senior is paid first in bankruptcy",correct:true,why:"Priority of claims."},{t:"Senior just means older debt",correct:false,why:"It's about priority, not age."}]},
+    {q:"True or false: filing Chapter 11 means the firm must immediately cease operations.",options:[{t:"False",correct:true,why:"Ch.11 reorganizes while continuing to operate."},{t:"True",correct:false,why:"That's closer to Ch.7 liquidation."}]},
+    {q:"What does 'growing externally' mean (Loewen in the 70s–80s)?",options:[{t:"Growing via mergers & acquisitions",correct:true,why:"Buying up other funeral homes."},{t:"Issuing new equity",correct:false,why:"That's financing, not external growth."}]},
+    {q:"How would you describe Loewen's industry?",options:[{t:"Fragmented with high competition",correct:true,why:"Many small family firms; consolidators compete."},{t:"Concentrated with low competition",correct:false,why:"It's fragmented."}]},
+    {q:"Which might make a firm reluctant to issue equity?",options:[{t:"Debt overhang",correct:true,why:"Gains would accrue to existing creditors."},{t:"Over-priced equity",correct:false,why:"Over-pricing is a reason TO issue."}]}
+  ]),
+  mispricing:(MCQS.mispricing||[]).concat([
+    {q:"An all-equity firm (100 shares @ €1) funds a project costing 10 that pays 15 (no discounting, competitive). New-share issue price?",options:[{t:"€1.05",correct:true,why:"Post-announcement value = 100 + NPV 5 = 105 over 100 shares."},{t:"€1.00",correct:false,why:"Price rises to reflect the positive NPV."},{t:"€0.95",correct:false,why:"A good project raises, not lowers, the price."}]},
+    {q:"A firm MORE pessimistic than the market should prefer to finance with…",options:[{t:"Equity",correct:true,why:"Sell over-priced shares while you can."},{t:"Debt",correct:false,why:"Debt is preferred when you think you're undervalued."}]},
+    {q:"Why is debt less affected by asymmetric information than equity?",options:[{t:"Lenders mainly care about downside/default, not the upside",correct:true,why:"Disagreement about upside barely moves safe debt's value."},{t:"Debt is tax-deductible",correct:false,why:"True but irrelevant to information sensitivity."}]}
+  ]),
+  infineon:(MCQS.infineon||[]).concat([
+    {q:"Which is likely to have the HIGHEST leverage (least cash)?",options:[{t:"A big department store",correct:true,why:"Tangible, redeployable assets and stable cash flows."},{t:"A tech startup",correct:false,why:"Risky, intangible, cash-hungry."},{t:"A law firm",correct:false,why:"Value is human capital — flees in distress."},{t:"A luxury brand",correct:false,why:"Intangible brand, cyclical demand."}]},
+    {q:"Which factor makes a firm more likely to hold cash (rather than borrow)?",options:[{t:"A low marginal tax rate",correct:true,why:"A weak tax shield removes a key reason to borrow."},{t:"A high credit rating",correct:false,why:"Easy debt access supports borrowing."},{t:"A diversified customer base",correct:false,why:"Stability supports more debt."}]},
+    {q:"What is the signaling theory of dividends?",options:[{t:"Paying dividends signals management's confidence in the future",correct:true,why:"Credible because it commits cash."},{t:"Cutting dividends signals great investment opportunities",correct:false,why:"Cuts signal trouble, not opportunity."}]},
+    {q:"True or false: a firm should pay out cash if its return on that cash is below its cost of capital.",options:[{t:"True",correct:true,why:"Idle low-return cash is better in shareholders' hands."},{t:"False",correct:false,why:"Retaining low-return cash destroys value."}]}
+  ])
+});
+
+Object.assign(Templates,{
+  liq:{topic:"proj",title:"Liquidation (terminal) value",
+    gen(r){const book=ri(r,80,300);return {sale:book+ri(r,-60,120),book,t:rf(r,.1,.3,2)};},
+    prompt(p){return `At project end you sell assets for <b>${p.sale}</b> (book value <b>${p.book}</b>). Tax rate <b>${(p.t*100).toFixed(0)}%</b>, no NWC. Compute the liquidation value.`;},
+    solve(p){return M.liquidation(p.sale,p.book,p.t);},
+    steps(p){return [{l:"LV = Sale − t·(Sale−Book)",ex:`${p.sale} − ${p.t}×(${p.sale}−${p.book}) = ${M.r2(M.liquidation(p.sale,p.book,p.t))}`}];},unit:"",tol:0.02},
+  relev:{topic:"beyond",title:"Relever to project beta",
+    gen(r){return {bA:rf(r,0.6,1.6,2),lev:pick(r,[0.2,0.25,0.5,0.6]),bD:pick(r,[0,0,0.1,0.15])};},
+    prompt(p){const dE=p.lev/(1-p.lev);return `Asset beta <b>${p.bA}</b>, target leverage D/(D+E)=<b>${(p.lev*100).toFixed(0)}%</b> (D/E=${dE.toFixed(3)}), β_D=<b>${p.bD}</b>. Compute the equity beta.`;},
+    solve(p){const dE=p.lev/(1-p.lev);return M.relever(p.bA,dE,p.bD);},
+    steps(p){const dE=p.lev/(1-p.lev);return [{l:"D/E",ex:`${(p.lev).toFixed(2)}/(1−${(p.lev).toFixed(2)})=${dE.toFixed(3)}`},{l:"β_E = β_A + (D/E)(β_A−β_D)",ex:`${p.bA}+${dE.toFixed(3)}×(${p.bA}−${p.bD})=${M.r2(M.relever(p.bA,dE,p.bD))}`}];},unit:"",tol:0.02},
+  wacc:{topic:"wacc",title:"WACC",
+    gen(r){return {lev:pick(r,[0.2,0.25,0.3,0.4,0.5,0.6]),rD:rf(r,3,7,1),rE:rf(r,8,16,1),t:pick(r,[0.2,0.25,0.3])};},
+    prompt(p){return `Leverage D/(D+E)=<b>${(p.lev*100).toFixed(0)}%</b>, r_D=<b>${p.rD}%</b>, r_E=<b>${p.rE}%</b>, tax=<b>${(p.t*100).toFixed(0)}%</b>. Compute WACC (%).`;},
+    solve(p){return M.waccW(p.lev,p.rD,p.rE,p.t);},
+    steps(p){return [{l:"WACC = D/(D+E)·r_D·(1−t) + E/(D+E)·r_E",ex:`${p.lev}×${p.rD}×${(1-p.t).toFixed(2)} + ${(1-p.lev).toFixed(2)}×${p.rE} = ${M.r2(M.waccW(p.lev,p.rD,p.rE,p.t))}%`}];},unit:"%",tol:0.03},
+  roe:{topic:"brick",title:"ROE",
+    gen(r){return {ni:ri(r,40,200),be:ri(r,300,4000)};},
+    prompt(p){return `Net income <b>${p.ni}</b>, book equity <b>${p.be}</b>. Compute ROE (%).`;},
+    solve(p){return M.roe(p.ni,p.be)*100;},
+    steps(p){return [{l:"ROE = NI / Book Equity",ex:`${p.ni}/${p.be} = ${M.r2(M.roe(p.ni,p.be)*100)}%`}];},unit:"%",tol:0.05},
+  its:{topic:"capstruct",title:"PV of interest tax shield",
+    gen(r){return {D:ri(r,200,2000),tau:rf(r,.15,.35,2)};},
+    prompt(p){return `Perpetual debt <b>${p.D}</b>, tax rate <b>${(p.tau*100).toFixed(0)}%</b>. Compute PV of the interest tax shield.`;},
+    solve(p){return M.pvITS(p.D,p.tau);},
+    steps(p){return [{l:"PV(ITS) = τ·D",ex:`${p.tau}×${p.D} = ${M.r2(M.pvITS(p.D,p.tau))}`}];},unit:"",tol:0.01},
+  eps:{topic:"ma",title:"M&A shares issued (stock deal)",
+    gen(r){return {mcB:ri(r,500,4000)*1000,pA:ri(r,20,80)};},
+    prompt(p){return `Acquirer's share price <b>${p.pA}</b>. It buys a target with market value <b>${p.mcB.toLocaleString()}</b> in a stock deal. How many shares must it issue?`;},
+    solve(p){return M.sharesIssued(p.mcB,p.pA);},
+    steps(p){return [{l:"Shares = MktCap_target / Price_acquirer",ex:`${p.mcB.toLocaleString()}/${p.pA} = ${Math.round(M.sharesIssued(p.mcB,p.pA)).toLocaleString()}`}];},unit:" shares",tol:1},
+  pe:{topic:"compval",title:"P/E valuation",
+    gen(r){return {peerPrice:ri(r,20,120),peerEPS:rf(r,1,8,2),tEPS:rf(r,1,8,2)};},
+    prompt(p){return `A peer trades at price <b>${p.peerPrice}</b> with EPS <b>${p.peerEPS}</b>. Your target has EPS <b>${p.tEPS}</b>. Implied price?`;},
+    solve(p){const peer=M.pe(p.peerPrice,p.peerEPS);return M.peValue(peer,p.tEPS);},
+    steps(p){const peer=M.pe(p.peerPrice,p.peerEPS);return [{l:"Peer P/E",ex:`${p.peerPrice}/${p.peerEPS}=${M.r2(peer)}`},{l:"× target EPS",ex:`${M.r2(peer)}×${p.tEPS}=${M.r2(M.peValue(peer,p.tEPS))}`}];},unit:"",tol:0.05},
+  preax:{topic:"beyond",title:"Pre-tax WACC (r_A)",
+    gen(r){return {lev:pick(r,[0.3,0.4,0.5,0.6]),rD:rf(r,3,6,1),rE:rf(r,8,14,1)};},
+    prompt(p){return `Leverage <b>${(p.lev*100).toFixed(0)}%</b>, r_D=<b>${p.rD}%</b>, r_E=<b>${p.rE}%</b>. Compute the pre-tax WACC r_A (%).`;},
+    solve(p){return M.preTaxWacc(p.lev,p.rD,p.rE);},
+    steps(p){return [{l:"r_A = D/(D+E)·r_D + E/(D+E)·r_E",ex:`${p.lev}×${p.rD}+${(1-p.lev).toFixed(2)}×${p.rE}=${M.r2(M.preTaxWacc(p.lev,p.rD,p.rE))}%`}];},unit:"%",tol:0.02}
+});
+
+/* Explore widgets — interactive intuition labs */
+const EXPLORE={
+  wacc:{title:"WACC & cost of equity vs leverage",topic:"beyond",
+    desc:"Pre-tax WACC (r_A) is flat as leverage rises (MM). After-tax WACC falls only via the tax shield, while the cost of equity rises with risk.",
+    controls:[{key:"bA",label:"Asset beta β_A",min:0.4,max:1.8,step:0.05,val:1.0},{key:"t",label:"Tax rate",min:0,max:0.4,step:0.05,val:0.3,pct:true},{key:"rf",label:"Risk-free",min:0.01,max:0.05,step:0.005,val:0.03,pct:true},{key:"mrp",label:"Market risk premium",min:0.04,max:0.08,step:0.005,val:0.07,pct:true},{key:"rD",label:"Cost of debt",min:0.02,max:0.08,step:0.005,val:0.04,pct:true}],
+    plot(v){const pts=[];for(let lev=0;lev<=0.8;lev+=0.05){const dE=lev/(1-lev);const bE=M.relever(v.bA,dE,0);const rE=M.capm(v.rf,bE,v.mrp);const rA=M.preTaxWacc(lev,v.rD,rE);const wacc=M.waccW(lev,v.rD,rE,v.t);pts.push({lev,rE,rA,wacc});}return pts;},
+    series:[{key:"rE",label:"Cost of equity r_E",color:"#7c5bff"},{key:"rA",label:"Pre-tax WACC r_A",color:"#ffc857"},{key:"wacc",label:"After-tax WACC",color:"#36d399"}]},
+  tv:{title:"Terminal value sensitivity to (r, g)",topic:"compval",
+    desc:"TV = (1+g)·FCF/(r−g). It explodes as g approaches r — small assumption changes move value a lot.",
+    controls:[{key:"f",label:"Final-year FCF",min:50,max:200,step:10,val:100},{key:"g",label:"Growth g",min:0,max:0.04,step:0.005,val:0.02,pct:true}],
+    plot(v){const pts=[];for(let r=Math.max(v.g+0.01,0.04);r<=0.14;r+=0.005){pts.push({lev:r,tv:M.tvPerp(v.f,r,v.g)});}return pts;},
+    xlab:"WACC r",series:[{key:"tv",label:"Terminal value",color:"#5b8cff"}]}
+};
+
+/* ---------- Mini-cases (carry-forward) ---------- */
+const CASES=[
+  {id:"ryde",topic:"beyond",part:"Valuation",nm:"Ryde — Project Quick Byte",
+   oneLine:"A ride-share firm values a meal-delivery project: pick the twin, find the discount rate, compute NPV. Showcases carry-forward.",
+   scenario:"Ryde (public ride-share, mostly intangible assets, cyclical, strong competition, well managed) is considering Project Quick Byte: a meal-delivery expansion. Investment €180M up front (2024); after-tax FCF €70M starting 2025, growing 2% in perpetuity. Competitors: Süper (ride-share + meal delivery) and Snackaroo (pure-play meal delivery).",
+   exhibits:[
+     {title:"Competitors — market data (€m)",cols:["Company","Book eq.","Shares","Price","Total debt","Cash","β_D","β_E"],rows:[["Süper","11250","2000","70","11000","6000","0","1.3"],["Snackaroo","1000","60","50","1050","50","0","2.0"]]},
+     {title:"Market, institutional & project data",cols:["Item","Value"],rows:[["Tax rate","30%"],["20-yr risk-free","3%"],["Equity market risk premium","7%"],["Project investment (2024)","180"],["Project FCF (2025)","70"],["Project FCF growth","2%"],["Project D/E (target)","2.0"],["Project β_D","0"],["Project cost of debt","4%"]]}
+   ],
+   parts:[
+     {id:"twin",kind:"mcq",points:5,q:"Which firm is the most suitable twin for the meal-delivery project?",
+      options:[{t:"Snackaroo",correct:true,why:"Pure-play meal delivery — its business risk matches the project (like using pure-play telecom twins for Bouygues)."},{t:"Süper",correct:false,why:"Mixed ride-share + meal delivery, so its asset beta blends two businesses."},{t:"Ryde itself",correct:false,why:"Ryde is ride-share; the project is a different business."}]},
+     {id:"rate",kind:"numeric",points:8,star:true,unit:"%",key:"rate",gold:13.5,tol:0.1,
+      q:"(*) Suppose the project is 100% equity financed. Compute the discount rate. (Unlever Snackaroo → that is the project β_A → since all-equity, β_E=β_A → CAPM.)",
+      solve:()=>13.5,
+      steps:()=>[{l:"Snackaroo net debt / equity",ex:"D=1050−50=1000; E=60×50=3000; D/(D+E)=25%"},{l:"Unlever",ex:"β_A = 2×(1−0.25) = 1.5"},{l:"All-equity ⇒ β_E=β_A=1.5; CAPM",ex:"r_E = 3% + 1.5×7% = 13.5%"}]},
+     {id:"npv1",kind:"numeric",points:4,unit:"",key:"npv1",gold:428.70,tol:1,
+      q:"What is the NPV of Quick Byte if it is 100% equity financed? (Uses your discount rate above.)",
+      solve:(C)=>M.npvPerp(180,70,(C.rate)/100,0.02),
+      steps:(C)=>[{l:"Growing perpetuity",ex:"NPV = −180 + 70/(r−0.02)"},{l:"Plug in r="+(C.rate)+"%",ex:"−180 + 70/("+((C.rate)/100).toFixed(4)+"−0.02) = "+M.r2(M.npvPerp(180,70,(C.rate)/100,0.02))}]},
+     {id:"wacc2",kind:"numeric",points:8,star:true,unit:"%",key:"wacc2",gold:13.37,tol:0.1,
+      q:"(*) Now target D/E = 2.0, β_D = 0, cost of debt 4%. Compute the project WACC.",
+      solve:()=>M.waccW(2/3,4,M.capm(3,M.relever(1.5,2,0),7),0.30),
+      steps:()=>[{l:"Relever",ex:"β_E = 1.5 + 2×1.5 = 4.5"},{l:"CAPM",ex:"r_E = 3% + 4.5×7% = 34.5%"},{l:"WACC (D/(D+E)=2/3)",ex:"2/3×4%×0.7 + 1/3×34.5% = 13.37%"}]},
+     {id:"npv2",kind:"numeric",points:5,unit:"",key:"npv2",gold:435.84,tol:1.5,
+      q:"Compute NPV for Quick Byte using that WACC. (Uses your WACC above.)",
+      solve:(C)=>M.npvPerp(180,70,(C.wacc2)/100,0.02),
+      steps:(C)=>[{l:"Perpetuity at WACC",ex:"−180 + 70/("+((C.wacc2)/100).toFixed(4)+"−0.02) = "+M.r2(M.npvPerp(180,70,(C.wacc2)/100,0.02))},{l:"Vs all-equity",ex:"Higher than the all-equity NPV — the project now benefits from the interest tax shield."}]},
+     {id:"wacc3",kind:"numeric",points:5,unit:"%",key:"wacc3",gold:12.67,tol:0.1,
+      q:"Suppose instead the project's β_D is 0.15 (cost of debt unchanged). Compute the new WACC.",
+      solve:()=>M.waccW(2/3,4,M.capm(3,M.relever(1.5,2,0.15),7),0.30),
+      steps:()=>[{l:"Relever with β_D=0.15",ex:"β_E = 1.5 + 2×(1.5−0.15) = 4.2"},{l:"CAPM",ex:"r_E = 3% + 4.2×7% = 32.4%"},{l:"WACC",ex:"2/3×4%×0.7 + 1/3×32.4% = 12.67% (assuming β_D=0 overstates β_E and WACC)"}]}
+   ]}
+];
+
+CASES.push(
+  {id:"biopeck",topic:"mispricing",part:"Mispricing",nm:"BioPeck — Mispricing & Financing",
+   oneLine:"All-equity biotech; management knows the drug succeeds but the market doesn't. Equity vs debt under asymmetric information. Carry-forward chain.",
+   scenario:"BioPeck is all-equity with 10M shares. If the drug succeeds the firm is worth €200M; if it fails, €50M. Management knows it will succeed; the market assigns 50/50. Investors do not discount. A new investment costs €50M and is valued by the market at €65M (NPV €15M); there is no disagreement about the project.",
+   exhibits:[{title:"Key data",cols:["Item","Value"],rows:[["Shares","10M"],["Value if success","€200M"],["Value if failure","€50M"],["Market probability of success","50%"],["New investment cost","€50M"],["Market value of new asset","€65M"]]}],
+   parts:[
+     {id:"sp",kind:"numeric",points:3,unit:"",key:"sp",gold:12.5,tol:0.05,
+      q:"What is BioPeck's share price given investors' beliefs?",
+      solve:()=>(0.5*50+0.5*200)/10,
+      steps:()=>[{l:"Expected asset value",ex:"½·50 + ½·200 = 125"},{l:"Per share (no net debt)",ex:"125/10 = 12.5"}]},
+     {id:"mis",kind:"numeric",points:3,unit:"",key:"mis",gold:7.5,tol:0.05,
+      q:"From management's view (success is certain), by how much per share is the stock underpriced?",
+      solve:()=>200/10-12.5,
+      steps:()=>[{l:"True value per share",ex:"200/10 = 20"},{l:"Underpricing",ex:"20 − 12.5 = 7.5"}]},
+     {id:"p",kind:"numeric",points:5,star:true,unit:"",key:"p",gold:14,tol:0.05,
+      q:"(*) To finance with 100% equity, BioPeck issues n shares at price p with n·p = 50 and (10+n)·p = 125 + 65. Compute p.",
+      solve:()=>M.issuancePrice(10,125,65,50),
+      steps:()=>[{l:"Combine the two conditions",ex:"10p + 50 = 125 + 65 = 190"},{l:"Solve",ex:"p = (190 − 50)/10 = 14"}]},
+     {id:"n",kind:"numeric",points:3,unit:"M shares",key:"n",gold:3.571,tol:0.02,
+      q:"How many new shares n must BioPeck issue? (Uses your p.)",
+      solve:(C)=>50/C.p,
+      steps:(C)=>[{l:"n = raise / p",ex:"50/"+C.p+" = "+M.r2(50/C.p)}]},
+     {id:"fp",kind:"numeric",points:3,star:true,unit:"",key:"fp",gold:19.53,tol:0.1,
+      q:"(*) After the drug news becomes public, if BioPeck invested, the firm is worth 200+65=265 with (10+n) shares. Compute the resulting share price. (Uses your n.)",
+      solve:(C)=>265/(10+C.n),
+      steps:(C)=>[{l:"Price = total value / total shares",ex:"265/(10+"+M.r2(C.n)+") = "+M.r2(265/(10+C.n))}]},
+     {id:"dec",kind:"mcq",points:4,q:"Should management proceed with the investment via equity?",
+      options:[{t:"No — the post-news price (≈19.53) is below the do-nothing price of 20",correct:true,why:"Issuing underpriced equity transfers value to new investors; the cost exceeds the project's NPV."},{t:"Yes — the project has positive NPV",correct:false,why:"Positive NPV isn't enough when you must issue underpriced equity to fund it."}]},
+     {id:"peck",kind:"mcq",points:4,q:"What does this illustrate about financing choice?",
+      options:[{t:"Pecking order: prefer retained earnings, then debt, then equity",correct:true,why:"Debt is less info-sensitive; equity issuance suffers most from underpricing."},{t:"Firms should always issue equity for positive-NPV projects",correct:false,why:"Underpricing can make equity financing destroy value for existing holders."}]}
+   ]},
+  {id:"gulliver",topic:"brick",part:"Financial Policy + Valuation",nm:"Gulliver — Covenant & Acquisition",
+   oneLine:"Supermarket chain: diagnose cash cow/calf, test a Net Debt/EBITDA covenant, then value an acquisition by DCF and transaction multiple.",
+   scenario:"Gulliver Markets (supermarkets + owned real estate) pays ~50% of earnings as dividends, never issues equity, and has a covenant: Net Debt/EBITDA ≤ 2.50×. It is considering acquiring Greenland Foods (private, 5M shares, owners would sell at £4.20). 2023: Net income 14.3, Book equity 224.2, EBITDA 53.0, Debt 168.7, Cash 51.3; Assets 510.8 (2022: 450.4). 2024 assumptions: sales growth 15%, EBITDA/sales 4.3%, A/P/sales 10.2%, payout 50%, forecast 2024 net income 26.3; 2024 forecast assets 571.5, cash 58.9.",
+   exhibits:[
+     {title:"Gulliver financials (£m)",cols:["Item","2022","2023"],rows:[["Net income","13.8","14.3"],["EBITDA","49.1","53.0"],["Book equity","117.0","224.2"],["Debt","229.4","168.7"],["Cash","44.8","51.3"],["Total assets","450.4","510.8"]]},
+     {title:"Greenland peers & deals",cols:["Item","Value"],rows:[["Peer avg unlevered beta","0.67"],["Target leverage (D/EV)","40%"],["Cost of debt","5.7%"],["Risk-free / MRP / tax","3% / 5% / 20%"],["Greenland 2028 FCF","2.0 (g=1.5%)"],["PV of 2024–28 FCF (in 2023)","6.0"],["Greenland net debt 2023","13.4"],["Comparable-deal avg EV/EBITDA","7.7×"],["Greenland EBITDA / debt / cash","5.0 / 15.6 / 2.2"]]}
+   ],
+   parts:[
+     {id:"roe",kind:"numeric",points:5,unit:"%",key:"roe",gold:6.38,tol:0.05,
+      q:"Compute Gulliver's ROE for 2023.",
+      solve:()=>M.roe(14.3,224.2)*100,
+      steps:()=>[{l:"ROE = NI / Book Equity",ex:"14.3/224.2 = 6.38%"}]},
+     {id:"calf",kind:"mcq",points:5,q:"Is Gulliver a cash cow or a cash calf in 2023?",
+      options:[{t:"Cash calf — asset growth (13.4%) exceeds g* (3.19%)",correct:true,why:"g* = (1−0.5)·6.38% = 3.19% < 13.4% growth, so leverage rises unless it issues equity or cuts payout."},{t:"Cash cow — it generates more cash than it needs",correct:false,why:"It grows faster than sustainable, so it needs outside funds — a calf."}]},
+     {id:"cov23",kind:"numeric",points:3,unit:"×",key:"cov23",gold:2.21,tol:0.03,
+      q:"Did Gulliver satisfy the covenant (Net Debt/EBITDA ≤ 2.50×) in 2023?",
+      solve:()=>(168.7-51.3)/53.0,
+      steps:()=>[{l:"Net debt",ex:"168.7 − 51.3 = 117.4"},{l:"÷ EBITDA",ex:"117.4/53.0 = 2.21× ≤ 2.50 ✓"}]},
+     {id:"cov24",kind:"numeric",points:7,star:true,unit:"×",key:"cov24",gold:2.52,tol:0.05,
+      q:"(*) Will Gulliver satisfy the covenant in 2024? (Forecast EBITDA and Net Debt; 2024 NI = 26.3.)",
+      solve:()=>{const sales=1.15*1137.2;const ebitda=0.043*sales;const ap=0.102*sales;const eq=224.2+0.5*26.3;const debt=571.5-ap-eq;return (debt-58.9)/ebitda;},
+      steps:()=>[{l:"Sales24",ex:"1.15×1137.2 = 1307.8"},{l:"EBITDA24",ex:"4.3%×1307.8 = 56.2"},{l:"Equity24",ex:"224.2 + 0.5×26.3 = 237.35"},{l:"Debt24 = Assets − A/P − Equity",ex:"571.5 − 133.4 − 237.35 ≈ 200.8"},{l:"Net Debt/EBITDA",ex:"(200.8−58.9)/56.2 = 2.52× > 2.50 → violated (cash calf)"}]},
+     {id:"gwacc",kind:"numeric",points:8,star:true,unit:"%",key:"gwacc",gold:6.96,tol:0.1,
+      q:"(*) Estimate Greenland's WACC: peer unlevered beta 0.67, target leverage 40% (D/EV), rD 5.7%, rf 3%, MRP 5%, tax 20%.",
+      solve:()=>{const bE=0.67*(1+40/60);const rE=M.capm(3,bE,5);return M.waccW(0.4,5.7,rE,0.20);},
+      steps:()=>[{l:"Relever (D/E=40/60)",ex:"β_E = 0.67×(1+40/60) = 1.11"},{l:"CAPM",ex:"r_E = 3% + 1.11×5% = 8.56%"},{l:"WACC",ex:"0.4×5.7%×0.8 + 0.6×8.56% = 6.96%"}]},
+     {id:"gtv",kind:"numeric",points:3,unit:"",key:"gtv",gold:37.20,tol:0.1,
+      q:"Compute Greenland's terminal value as of 2028 (FCF 2.0, g 1.5%). Uses your WACC.",
+      solve:(C)=>M.tvPerp(2,C.gwacc/100,0.015),
+      steps:(C)=>[{l:"TV = (1+g)FCF/(r−g)",ex:"1.015×2/("+(C.gwacc/100).toFixed(4)+"−0.015) = "+M.r2(M.tvPerp(2,C.gwacc/100,0.015))}]},
+     {id:"gshare",kind:"numeric",points:5,unit:"£",key:"gshare",gold:3.83,tol:0.1,
+      q:"Compute Greenland's DCF value per share (PV of FCF 2024–28 = 6.0; net debt 13.4; 5M shares). Uses your TV & WACC.",
+      solve:(C)=>{const pv=M.pvTV(C.gtv,C.gwacc/100,5);return (pv+6-13.4)/5;},
+      steps:(C)=>[{l:"PV(TV)",ex:M.r2(C.gtv)+"/1.0696^5 = "+M.r2(M.pvTV(C.gtv,C.gwacc/100,5))},{l:"EV = PV(FCF)+PV(TV)",ex:M.r2(M.pvTV(C.gtv,C.gwacc/100,5))+"+6 = "+M.r2(M.pvTV(C.gtv,C.gwacc/100,5)+6)},{l:"Equity/share = (EV − net debt)/shares",ex:"("+M.r2(M.pvTV(C.gtv,C.gwacc/100,5)+6)+"−13.4)/5 = "+M.r2((M.pvTV(C.gtv,C.gwacc/100,5)+6-13.4)/5)}]},
+     {id:"gmult",kind:"numeric",points:6,unit:"£",key:"gmult",gold:5.02,tol:0.1,
+      q:"Value Greenland per share by transaction multiple: comparable-deal avg EV/EBITDA 7.7×, EBITDA 5.0, debt 15.6, cash 2.2, 5M shares.",
+      solve:()=>{const ev=7.7*5;return (ev-15.6+2.2)/5;},
+      steps:()=>[{l:"Implied EV",ex:"7.7×5 = 38.5"},{l:"Equity = EV − Debt + Cash",ex:"38.5 − 15.6 + 2.2 = 25.1"},{l:"Per share",ex:"25.1/5 = 5.02"}]}
+   ]}
+);
+
+/* ---------- Essays (rubric self-grade) ---------- */
+const ESSAYS={
+  capstruct:{prompt:"A company is well-managed, in a stable non-cyclical industry, with mostly tangible re-saleable assets and a large steady tax bill. Should it target higher or lower leverage than the average firm? Use the target-leverage checklist.",
+    points:["Names ITS as a pro: large steady tax bill → strong reason to lever up","Low cyclicality / stable cash flows → low risk of financial distress","Tangible, re-saleable assets → low distress cost (recoup value in liquidation)","Well-managed → discipline is a weak reason either way","Concludes: HIGHER leverage than average","Avoids the fallacy 'debt is cheaper' as a justification"],
+    model:"Pros of debt: the large, predictable tax bill makes the interest tax shield valuable (strong reason for more debt). Cons: the business is stable and non-cyclical, so the risk of financial distress is low; assets are tangible and re-saleable, so the cost of distress is low; strong management means discipline is not a pressing concern. On balance there are strong reasons to take on debt and few to avoid it, so the firm should target HIGHER leverage than the average firm. Note: 'debt is cheaper than equity' is not a valid reason — the pre-tax WACC is unchanged by leverage."},
+  brick:{prompt:"Shareholders argue Gulliver should use more debt because it raises ROE. Evaluate this argument.",
+    points:["Acknowledges it's true that leverage raises (expected) ROE","Explains leverage also raises equity RISK","Concludes it's a fallacy / incomplete on its own","Mentions ROE is leverage-dependent so not a clean performance measure"],
+    model:"It is true that leverage increases expected ROE, because it increases the expected return on equity. However, leverage also increases the risk borne by equity. Higher ROE here simply compensates for higher risk — it is neither good nor bad per se. So 'more debt because it boosts ROE' is a fallacy in the absence of other information (tax, distress, mispricing). ROE is also leverage-dependent, which is why ROIC/ROA are better operating measures."},
+  ma:{prompt:"An acquirer is choosing between paying with cash or with its own stock. What do the two choices signal, and which tends to do better long-term?",
+    points:["Cash = certainty for target, acquirer bears synergy risk","Stock = target shares synergy risk","Stock signals acquirer may think its shares are overvalued","Cash signals shares undervalued / confidence","Empirically cash acquirers outperform stock acquirers long-run"],
+    model:"With cash, target shareholders get a certain upfront payment and the acquirer bears all synergy risk; it also signals the acquirer believes its own shares are fairly or under-valued. With stock, the target shares synergy risk, and it signals the acquirer may think its shares are overvalued (paying with 'expensive' currency). Consistent with this, stock-financed acquirers earn negative long-run abnormal returns while cash acquirers do better."},
+  mispricing:{prompt:"Why do stock prices typically fall when firms announce an equity issue, and how does this relate to the pecking order?",
+    points:["Asymmetric information between managers and market","Overvalued firms more likely to issue (adverse selection)","Market rationally discounts issuance → price falls","Debt is less information-sensitive than equity","Pecking order: retained earnings > debt > equity"],
+    model:"Managers know more than the market. Overvalued firms are more eager to issue equity (adverse selection), so a rational market interprets an equity issue as a signal that the shares may be overvalued and marks the price down. Debt is less information-sensitive (lenders mainly care about downside/default), so it suffers less from this problem. This underlies the pecking order: firms prefer retained earnings, then debt, then equity."},
+  infineon:{prompt:"Infineon is a cyclical, cash-rich semiconductor firm. What capital structure and payout policy do you recommend?",
+    points:["Cyclical + high fixed costs → high asset beta / distress risk","Minimal tax bill → weak ITS","Recommends low or NEGATIVE net leverage (cash > debt)","Payout: pay out cash if return on cash < cost of capital","Both dividends and buybacks signal positively"],
+    model:"Infineon is highly cyclical with high fixed costs, so distress risk and its costs are high, while a minimal tax bill makes the interest tax shield weak. So it should hold low or negative net leverage (cash buffer > debt). On payout, it should return cash that earns less than its cost of capital, balancing business reasons to retain (cyclical buffer, investment) against signaling; both dividends and repurchases send positive signals, and dividend cuts are avoided as a negative signal."}
+};
+
+/* ---------- Spaced-repetition cards ---------- */
+const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");
+const CARDS=FORMULAS.map(f=>({id:"f_"+slug(f.nm),topic:f.t,type:"formula",front:"Write the formula: <b>"+esc(f.nm)+"</b>",back:'<div class="formula">'+f.expr+"</div><div class='muted' style='margin-top:6px'>"+esc(f.when)+"</div>"})).concat([
+  {id:"c_incr",topic:"proj",type:"concept",front:"Which cash flows count in a project NPV?",back:"Only <b>incremental</b> ones (with the project minus without). Exclude sunk costs, transfer pricing, HQ allocation, financing; include opportunity costs of owned assets."},
+  {id:"c_fcfwhy",topic:"proj",type:"concept",front:"Why add back depreciation but exclude interest in FCF?",back:"Depreciation is non-cash; interest is financing (FCFF is unlevered, before financing). Tax is the fictitious tax on EBIT."},
+  {id:"c_betadrv",topic:"beyond",type:"concept",front:"What raises a firm's asset (unlevered) beta?",back:"Business cyclicality and high fixed costs (operating leverage) — not financing."},
+  {id:"c_mm",topic:"capstruct",type:"concept",front:"When does financial policy matter (MM)?",back:"Only if it (a) affects the business incl. taxes, or (b) financing is mispriced. Otherwise irrelevant."},
+  {id:"c_distress",topic:"capstruct",type:"concept",front:"Costs of financial distress = ?",back:"Cost of distress × <b>risk</b> of distress. Indirect costs (lost customers/suppliers/employees, fire sales, overhang, risk-shifting) arise even without actual default."},
+  {id:"c_overhang",topic:"capstruct",type:"concept",front:"Debt overhang?",back:"Near distress with risky debt, firms skip positive-NPV projects because gains accrue to existing creditors → underinvestment."},
+  {id:"c_cowcalf",topic:"brick",type:"concept",front:"Cash cow vs cash calf?",back:"Compare asset growth g to g*=(1−d)ROE. g<g* = cow (leverage falls); g>g* = calf (leverage rises unless issue equity / cut payout)."},
+  {id:"c_pecking",topic:"mispricing",type:"concept",front:"Pecking order of financing?",back:"Retained earnings &gt; debt &gt; equity (least information-sensitive first)."},
+  {id:"c_signal",topic:"mispricing",type:"concept",front:"Signaling: market reaction to issuance vs payout?",back:"Equity issuance → negative signal. Dividends &amp; buybacks → positive signal. Cheap talk doesn't work."},
+  {id:"c_eps",topic:"ma",type:"concept",front:"Is EPS accretion evidence of value creation?",back:"No — acquiring a lower-P/E firm raises EPS mechanically with zero value created. A red herring."},
+  {id:"c_control",topic:"ma",type:"concept",front:"Control valuation = ?",back:"Standalone value + control premium (synergies + improvements). Methods: DCF-with-synergies, transaction multiple, takeover premium vs undisturbed price."},
+  {id:"c_recap",topic:"ust",type:"concept",front:"Leveraged recap effect on value?",back:"Borrow to buy back shares: V_new = V_old + τ·D. The tax shield accrues to shareholders."},
+  {id:"c_wacclev",topic:"beyond",type:"concept",front:"Why does after-tax WACC fall with leverage but pre-tax WACC doesn't?",back:"Pre-tax r_A reflects asset risk (MM, unchanged). After-tax WACC falls only through the interest tax shield."},
+  {id:"c_bridge",topic:"compval",type:"concept",front:"Value bridge?",back:"EV = market Equity + Net Debt. So Equity = EV + Cash − Debt."}
+]);
+
+/* ---------- CF skill trainers ---------- */
+const MISCONCEPTIONS=[
+  {s:"“Debt is better than equity because it's cheaper.”",myth:true,why:"Cheaper debt just shifts risk onto equity, raising r_E. Pre-tax WACC is unchanged (MM). Only frictions like taxes make leverage add value."},
+  {s:"“Leverage adds value because it boosts ROE.”",myth:true,why:"Leverage raises expected ROE but also equity risk — the higher ROE is just compensation. Not value-creating on its own."},
+  {s:"“An EPS-accretive acquisition creates value.”",myth:true,why:"Buying a lower-P/E firm raises EPS mechanically with zero value created. Accretion is not a valuation test."},
+  {s:"“Use the company-wide WACC to value any division's project.”",myth:true,why:"A blended WACC overvalues high-risk divisions and undervalues low-risk ones. Use a pure-play, divisional WACC."},
+  {s:"“After-tax WACC decreases as leverage rises.”",myth:false,why:"True — but only through the interest tax shield: WACC = r_A − D/(D+E)·r_D·t."},
+  {s:"“The pre-tax WACC (r_A) is unchanged by leverage.”",myth:false,why:"True (Modigliani-Miller): r_A reflects asset risk; the cheaper-debt weight is offset by rising r_D and r_E."},
+  {s:"“On average, announcing an equity issue pushes the stock price down.”",myth:false,why:"True — adverse selection: overvalued firms issue more, so the market reads issuance as a negative signal."},
+  {s:"“The interest tax shield is valuable even with no taxable profit.”",myth:true,why:"The shield needs taxable income to deduct against; an unprofitable firm gets little benefit."},
+  {s:"“Sunk research already spent identifying a target belongs in the project NPV.”",myth:true,why:"Sunk costs are incurred regardless of the decision — never incremental."},
+  {s:"“A fairly-priced share buyback leaves the share price unchanged.”",myth:false,why:"True — cash falls but so does the share count proportionally, so price is unchanged."},
+  {s:"“A special dividend leaves the share price unchanged.”",myth:true,why:"Wrong — the price drops by the per-share dividend (cash leaves the firm)."},
+  {s:"“Costs of financial distress only matter once a firm actually goes bankrupt.”",myth:true,why:"Most are indirect and bite from the mere possibility of distress (lost customers/suppliers/employees, overhang)."}
+];
+const INCREMENTAL=[
+  {item:"Future legal & banker fees to close the deal",inc:true,why:"Incurred only if you do the deal (after tax) → incremental."},
+  {item:"Research already spent to identify the target",inc:false,why:"Sunk — spent regardless of the decision."},
+  {item:"Interest on the loan used to buy the plant",inc:false,why:"Financing; FCF is unlevered. (Tax shield handled separately in financial policy.)"},
+  {item:"Head-office cost allocation to the new plant",inc:false,why:"Same with or without the deal — internal allocation, not incremental."},
+  {item:"Transfer price 1.5% below market on internal sales",inc:false,why:"The plant's lost margin equals the buyer's gain — nets to zero."},
+  {item:"Opportunity cost of land the firm already owns and would use",inc:true,why:"Using it forgoes selling/renting — a real incremental cost."},
+  {item:"Extra working capital the plant requires",inc:true,why:"ΔNWC is a genuine incremental cash outflow."},
+  {item:"Synergies: cost savings at the firm's existing factories",inc:true,why:"Exist only because of the deal → incremental benefit."},
+  {item:"A machine the firm already owns and would otherwise sell",inc:true,why:"Its resale value is forgone — include the opportunity cost."},
+  {item:"Depreciation on the plant's new equipment",inc:true,why:"Non-cash, but it changes taxes, so it affects incremental FCF."}
+];
+const CHECKLISTS=[
+  {nm:"UST (stable cash cow)",desc:"Near-monopoly smokeless tobacco: very high, stable, predictable profits; large tax bill; low cyclicality; limited competition; little current debt.",rec:"HIGH leverage",
+   factors:[["Large, predictable tax bill (ITS)","more","Valuable interest tax shield → lever up."],["Stable, non-cyclical cash flows","more","Low distress probability supports more debt."],["Limited competition","more","Rivals can't exploit distress → safer to borrow."],["Excess cash flow (discipline)","more","Debt curbs wasteful spending of surplus cash."]]},
+  {nm:"Infineon (cyclical, cash-rich)",desc:"Semiconductors: highly cyclical demand, high fixed costs, fast innovation/R&D, minimal tax bill, lots of cash.",rec:"LOW / NEGATIVE leverage",
+   factors:[["Minimal/volatile tax bill","less","Weak interest tax shield → little reason to borrow."],["High cyclicality + fixed costs","less","High distress risk and cost."],["Heavy R&D / investment needs","less","Preserve flexibility; avoid overhang."],["Intangible, firm-specific assets","less","Hard to recoup value in distress."]]},
+  {nm:"Ryde (intangible, competitive)",desc:"Ride-share: cyclical, intangible assets, strong competition, key engineers, well managed, average tax.",rec:"LOW leverage",
+   factors:[["Average tax bill (ITS)","more","Some tax-shield benefit (a modest pro)."],["Cyclical business","less","Higher distress probability."],["Intangible assets","less","Little recoverable value in liquidation."],["Strong competition + key employees","less","Rivals and talent flight worsen distress."]]}
+];
+
+/* ---------- Mastery ---------- */
+function readiness(){
+  let sum=0,n=0;
+  for(const t of TOPICS){const a=Store.topicAcc(t.id);const td=Store.get().topics[t.id];const seen=td&&td.n?Math.min(1,td.n/6):0;sum+=a*0.7*seen+seen*0.3;n++;}
+  return Math.round((sum/n)*100);
+}
+function topicMastery(id){const a=Store.topicAcc(id);const td=Store.get().topics[id];const seen=td&&td.n?Math.min(1,td.n/6):0;return Math.round((a*0.7+0.3)*seen*100);}
+
+/* ---------- Views ---------- */
+const V={};
+V.home=()=>{
+  const d=daysToExam();const rd=readiness();
+  const dchip=d==null?"":`<span class="chip">${d>=0?d+" days to exam":"exam passed"}</span>`;
+  return `<h1>Corporate Finance — Exam Dojo</h1>
+  <p class="muted">Closed-book final · Part I quiz (20 pts) + Part II mini-case (80 pts). Practice retrieval, not re-reading.</p>
+  <div class="grid cards" style="margin-top:18px">
+    <div class="card"><div class="muted">Exam readiness</div><div class="bignum">${rd}%</div>
+      <div class="bar" style="margin-top:10px"><i style="width:${rd}%"></i></div>
+      <div class="row" style="margin-top:12px">${dchip}<label class="muted" style="font-size:13px">Exam date <input type="date" id="examdate" value="${esc(Store.get().examDate||"")}"></label></div>
+    </div>
+    <div class="card"><div class="muted">Now do this</div>
+      <p style="margin:.5em 0">${coachMsg()}</p>
+      <div class="row"><a class="btn primary sm" href="#/learn">Open a topic</a><a class="btn sm" href="#/formula">Formula sheet</a></div>
+    </div>
+    <div class="card"><div class="muted">Course map</div>
+      <p style="margin:.5em 0 0">${TOPICS.length} sessions · two halves: <span class="chip s">Valuation</span> <span class="chip s">Financial Policy</span></p>
+      <div class="row" style="margin-top:12px"><a class="btn sm" href="#/learn">Learn</a><a class="btn sm" href="#/selftest">Self-test</a></div>
+    </div>
+  </div>
+  <h2>Sessions</h2>${topicGrid()}`;
+};
+function mistakeCount(){const n=Store.get().mistakes.length;return n?` (${n})`:"";}
+function coachMsg(){
+  let weak=null,wm=101;
+  for(const t of TOPICS){const m=topicMastery(t.id);if(m<wm){wm=m;weak=t;}}
+  if(!weak||wm===0)return "Start with <b>Cost of Capital (WACC)</b> — it underpins every valuation. Open its Takeaways, then Calculate.";
+  return `Your weakest area is <b>${esc(weak.nm)}</b> (${wm}% mastery). Drill its Concepts and Calculate tabs next.`;
+}
+function topicGrid(){
+  return `<div class="grid cards">`+TOPICS.map(t=>{
+    const m=topicMastery(t.id);
+    return `<a class="card lift" href="#/learn/${t.id}">
+      <div class="row" style="justify-content:space-between"><span class="chip s">S${t.s} · ${t.half==="V"?"Valuation":"Fin. Policy"}</span><span class="muted" style="font-size:12px">${m}%</span></div>
+      <h3 style="color:var(--tx);margin:.6em 0 .3em">${esc(t.nm)}</h3>
+      <div class="bar"><i style="width:${m}%"></i></div></a>`;
+  }).join("")+`</div>`;
+}
+V.learn=()=>`<h1>Learn</h1><p class="muted">Pick a session. Each hub has Takeaways · Calculate · Concepts.</p>${topicGrid()}`;
+
+V.topic=(id)=>{
+  const t=TOPICS.find(x=>x.id===id);if(!t)return `<p>Unknown topic.</p>`;
+  const tab=(location.hash.split("/")[3]||"takeaways");
+  const hasExplore=Object.values(EXPLORE).some(e=>e.topic===id);
+  const hasCase=CASES.some(c=>c.topic===id);
+  const tabs=["takeaways"].concat(hasExplore?["explore"]:[]).concat(["calculate","concepts"]).concat(hasCase?["case"]:[]);
+  const seg=`<div class="seg" role="tablist" style="margin:10px 0 18px">`+tabs.map(x=>`<button role="tab" class="${x===tab?"on":""}" onclick="location.hash='#/learn/${id}/${x}'">${x==="case"?"Mini-case":x[0].toUpperCase()+x.slice(1)}</button>`).join("")+`</div>`;
+  let body="";
+  if(tab==="takeaways")body=renderTakeaways(id);
+  else if(tab==="explore")body=`<div id="exmount"></div>`;
+  else if(tab==="calculate")body=`<div id="calcmount"></div>`;
+  else if(tab==="concepts")body=`<div id="mcqmount"></div>`;
+  else if(tab==="case"){const c=CASES.find(x=>x.topic===id);body=`<div id="casemount" data-case="${c.id}"></div>`;}
+  return `<div class="row" style="justify-content:space-between"><h1 style="margin-bottom:0">${esc(t.nm)}</h1><a class="btn ghost sm" href="#/learn">← all</a></div>
+  <span class="chip s">Session ${t.s}</span>${seg}${body}`;
+};
+function renderTakeaways(id){
+  const k=TAKEAWAYS[id];
+  if(!k)return `<div class="card"><p class="muted">Detailed takeaways for this session are being added. For now see the <a href="#/formula">formula sheet</a> and Concepts/Calculate tabs.</p></div>`;
+  const sec=(t,b)=>`<h3>${t}</h3>${b}`;
+  let h=`<div class="card"><div class="muted">${esc(k.session)}</div>`;
+  h+=sec("The problem",`<p>${esc(k.problem)}</p>`);
+  h+=sec("The approach",`<p>${esc(k.approach)}</p>`);
+  if(k.intuition)h+=sec("Intuition",`<p>${esc(k.intuition)}</p>`);
+  h+=sec("Key concepts",`<ul>${k.concepts.map(c=>`<li><b>${esc(c[0])}:</b> ${esc(c[1])}</li>`).join("")}</ul>`);
+  if(k.worked)h+=sec("Worked example",`<div class="card" style="background:var(--card2)">${k.worked}</div>`);
+  if(k.formulas&&k.formulas[0]!=="—")h+=sec("Formulas",`<div class="formula">${k.formulas.map(f=>`<div>${f}</div>`).join("")}</div>`);
+  else if(k.formulaNote)h+=sec("Formulas",`<p class="muted">${esc(k.formulaNote)}</p>`);
+  if(k.pitfalls)h+=sec("Common mistakes",`<ul>${k.pitfalls.map(p=>`<li class="bad" style="color:var(--tx)"><span class="bad">✗</span> ${esc(p)}</li>`).join("")}</ul>`);
+  h+=sec("What the examiner emphasizes",`<ul>${k.exam.map(e=>`<li>${esc(e)}</li>`).join("")}</ul>`);
+  return h+`</div>`;
+}
+V.formula=()=>{
+  const byTopic={};FORMULAS.forEach(f=>{(byTopic[f.t]=byTopic[f.t]||[]).push(f);});
+  let h=`<h1>Formula sheet</h1><p class="muted">Build your A4 from these. ★ = critical.</p>`;
+  for(const t of TOPICS){if(!byTopic[t.id])continue;h+=`<h2>${esc(t.nm)}</h2><div class="grid cards">`+byTopic[t.id].map(f=>`<div class="card"><div class="row" style="justify-content:space-between"><b>${esc(f.nm)}</b>${f.critical?'<span class="pill g">★</span>':''}</div><div class="formula" style="margin:.4em 0">${f.expr}</div><div class="muted" style="font-size:13px">${esc(f.when)}</div></div>`).join("")+`</div>`;}
+  return h;
+};
+V.cases=()=>`<h1>Mini-cases</h1><p class="muted">Guided multi-part cases that mirror Part II. Your intermediate answers <b>carry forward</b> — a wrong step won't block later ones.</p>
+  <div class="grid cards">`+CASES.map(c=>`<a class="card lift" href="#/case/${c.id}"><span class="chip s">${esc(c.part)}</span><h3 style="color:var(--tx);margin:.6em 0 .3em">${esc(c.nm)}</h3><p class="muted" style="font-size:13px">${esc(c.oneLine)}</p><div class="muted" style="font-size:12px;margin-top:8px">${c.parts.length} parts · ${c.parts.reduce((s,p)=>s+p.points,0)} pts · linked to ${esc(topicNm(c.topic))}</div></a>`).join("")+`</div>`;
+V.case=(id)=>{const c=CASES.find(x=>x.id===id);if(!c)return `<p>Unknown case.</p>`;
+  return `<div class="row" style="justify-content:space-between"><h1 style="margin-bottom:0">${esc(c.nm)}</h1><a class="btn ghost sm" href="#/cases">← all cases</a></div>
+  <span class="chip s">Part II · ${esc(c.part)}</span><div id="casemount" data-case="${id}" style="margin-top:14px"></div>`;};
+V.deck=()=>`<h1>Flashcard deck</h1><p class="muted">Spaced repetition, scheduled to peak before your exam. Grade honestly — only real delayed recall builds mastery.</p><div id="deckmount" style="margin-top:14px"></div>`;
+V.mistakes=()=>`<h1>Mistakes queue</h1><p class="muted">Every missed question lands here and only clears when you re-do it correctly.</p><div id="mistmount" style="margin-top:14px"></div>`;
+V.mix=()=>`<h1>Mixed practice (interleaved)</h1><p class="muted">Random topic each time — first decide <i>which</i> tool applies, then solve. This is the real exam skill.</p><div id="mixmount" style="margin-top:14px"></div>`;
+V.essays=()=>{const ks=Object.keys(ESSAYS);return `<h1>Essays</h1><p class="muted">Write a brief, precise answer; then self-grade against the rubric. The examiner penalizes adding incorrect or over-long content.</p>
+  <div class="seg" id="essaypick" style="margin:12px 0 16px">${ks.map((k,i)=>`<button class="${i===0?'on':''}" data-k="${k}">${esc(topicNm(k))}</button>`).join("")}</div><div id="essaymount"></div>`;};
+V.practice=()=>{const hub=[
+    ["#/deck","📇 Flashcard deck","Spaced repetition — formulas & concepts, scheduled to peak before your exam."],
+    ["#/mix","🔀 Mixed practice","Interleaved drills: decide which tool applies, then solve."],
+    ["#/train","🎯 Skill trainers","Spot-the-misconception, incremental-vs-sunk, target-leverage checklist."],
+    ["#/essays","✍️ Essays","Rubric self-graded written answers with model responses."],
+    ["#/mistakes","⚠️ Mistakes queue","Re-do everything you've missed until it's cleared"+mistakeCount()+"."]];
+  return `<h1>Practice</h1><p class="muted">Active recall, every way. Pick a mode.</p><div class="grid cards">`+hub.map(([h,t,d])=>`<a class="card lift" href="${h}"><h3 style="color:var(--tx)">${t}</h3><p class="muted" style="font-size:13px">${esc(d)}</p></a>`).join("")+`</div>`;
+};
+V.reference=()=>{const hub=[
+    ["#/formula","📐 Formula sheet","Every formula by session, with when-to-use notes."],
+    ["#/sheet","🖨 Cheat-sheet builder","Assemble & print your allowed double-sided A4."]];
+  return `<h1>Formulas</h1><p class="muted">Look up formulas and build your exam cheat sheet.</p><div class="grid cards">`+hub.map(([h,t,d])=>`<a class="card lift" href="${h}"><h3 style="color:var(--tx)">${t}</h3><p class="muted" style="font-size:13px">${esc(d)}</p></a>`).join("")+`</div>`;
+};
+V.exam=()=>`<h1>Mock exam</h1><p class="muted">Full paper under timed, closed-book conditions — Part I quiz (20 pts) + Part II problems (80 pts). No feedback until you submit; rate your confidence on each quiz question.</p><div id="exammount" style="margin-top:14px"></div>`;
+V.stats=()=>`<h1>Stats & calibration</h1><div id="statsmount" style="margin-top:6px"></div>`;
+V.train=()=>`<h1>Skill trainers</h1><p class="muted">Targeted drills for the exact moves the examiner rewards.</p>
+  <div class="grid cards">
+    <a class="card lift" href="#/train/miscon"><h3 style="color:var(--tx)">🎯 Spot the misconception</h3><p class="muted" style="font-size:13px">Myth or fact? The fallacies that lose marks: "debt is cheaper", "leverage boosts ROE", EPS accretion, company-wide WACC.</p></a>
+    <a class="card lift" href="#/train/incr"><h3 style="color:var(--tx)">✂️ Incremental vs sunk</h3><p class="muted" style="font-size:13px">Classify cash flows: include or exclude from a project NPV (Paper Tiger / Ryde).</p></a>
+    <a class="card lift" href="#/train/checklist"><h3 style="color:var(--tx)">⚖️ Target-leverage checklist</h3><p class="muted" style="font-size:13px">Read a business, rate each factor more/less debt, reach a recommendation.</p></a>
+  </div>`;
+V.trainer=(kind)=>`<div class="row" style="justify-content:space-between"><h1 style="margin-bottom:0">${kind==="miscon"?"Spot the misconception":kind==="incr"?"Incremental vs sunk":"Target-leverage checklist"}</h1><a class="btn ghost sm" href="#/train">← trainers</a></div><div id="trainmount" data-kind="${kind}" style="margin-top:14px"></div>`;
+V.sheet=()=>`<div class="row" style="justify-content:space-between"><h1 style="margin-bottom:0">A4 cheat-sheet builder</h1><button class="btn primary sm" onclick="window.print()">🖨 Print / Save PDF</button></div>
+  <p class="muted">Tick what to keep, then print double-sided A4 — your allowed exam aid. Building it is itself revision.</p><div id="sheetmount" style="margin-top:14px"></div>`;
+V.selftest=()=>{
+  const r=SelfTest.run();
+  return `<h1>Self-test (math core)</h1><p class="${r.fail?'bad':'good'}">${r.pass}/${r.total} pass${r.fail?` · ${r.fail} FAIL`:" · all green"}.</p>
+  <div class="card"><table class="dt"><tr><th>Test</th><th>Got</th><th>Want</th><th>OK</th></tr>${r.tests.map(t=>`<tr><td>${esc(t.name)}</td><td>${typeof t.got==="number"?t.got.toFixed(3):t.got}</td><td>${t.want}</td><td>${t.pass?'<span class="good">✓</span>':'<span class="bad">✗</span>'}</td></tr>`).join("")}</table></div>`;
+};
+
+/* ---------- Mount functions ---------- */
+function mountCalc(id){
+  const mt=$("#calcmount");if(!mt)return;
+  const keys=Object.keys(Templates).filter(k=>Templates[k].topic===id);
+  if(!keys.length){mt.innerHTML=`<div class="card"><p class="muted">Quant drills for this session are being added (Phase 2).</p></div>`;return;}
+  let state={key:keys[0],seed:Date.now()%100000,revealed:false};
+  function draw(){
+    const T=Templates[state.key];const p=T.gen(rng(state.seed));
+    const ans=T.solve(p);
+    mt.innerHTML=`<div class="seg" style="margin-bottom:14px">${keys.map(k=>`<button class="${k===state.key?'on':''}" data-k="${k}">${esc(Templates[k].title)}</button>`).join("")}</div>
+    <div class="card"><p>${T.prompt(p)}</p>
+      <div class="row"><input id="calcin" inputmode="decimal" placeholder="Your answer${T.unit?" ("+T.unit+")":""}" style="max-width:200px"><button class="btn primary" id="calcck">Check</button><button class="btn ghost" id="calcnew">New numbers</button></div>
+      <div id="calcfb" style="margin-top:12px"></div></div>`;
+    mt.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{state.key=b.dataset.k;state.seed=Date.now()%100000;draw();});
+    $("#calcnew").onclick=()=>{state.seed=(state.seed+7919)%100000;draw();};
+    $("#calcck").onclick=()=>{
+      const v=parseFloat($("#calcin").value.replace(",","."));
+      const fb=$("#calcfb");
+      if(isNaN(v)){fb.innerHTML=`<span class="muted">Enter a number.</span>`;return;}
+      const tol=Math.max(T.tol,Math.abs(ans)*0.01);
+      const ok=Math.abs(v-ans)<=tol+1e-9;
+      Store.logAttempt(id,ok);
+      if(!ok)Store.addMistake({kind:"quant",key:"q_"+state.key+"_"+state.seed,topic:id,title:T.title,prompt:T.prompt(p),answer:M.r2(ans),unit:T.unit||"",steps:T.steps(p),ts:Date.now()});
+      else Store.clearMistake("q_"+state.key+"_"+state.seed);
+      fb.innerHTML=`<div class="${ok?'good':'bad'}" style="font-weight:700">${ok?'Correct':'Not quite'} — answer ≈ ${M.r2(ans)}${T.unit}</div>
+        <div class="card" style="margin-top:8px;background:var(--card2)"><div class="muted" style="margin-bottom:6px">Worked solution</div>${T.steps(p).map(s=>`<div style="margin:.3em 0"><b>${esc(s.l)}:</b> <span class="formula">${s.ex}</span></div>`).join("")}</div>`;
+    };
+    $("#calcin").addEventListener("keydown",e=>{if(e.key==="Enter")$("#calcck").click();});
+  }
+  draw();
+}
+function mountMCQ(id){
+  const mt=$("#mcqmount");if(!mt)return;
+  const bank=MCQS[id]||[];
+  if(!bank.length){mt.innerHTML=`<div class="card"><p class="muted">Concept questions for this session are being added (Phase 2).</p></div>`;return;}
+  let i=0;
+  function draw(){
+    const q=bank[i%bank.length];
+    mt.innerHTML=`<div class="muted" style="margin-bottom:6px">Question ${i+1} of ${bank.length}</div>
+    <div class="card"><p style="font-weight:600">${esc(q.q)}</p><div id="opts"></div>
+      <div class="row" style="margin-top:10px"><button class="btn ghost sm" id="next" disabled>Next →</button></div></div>`;
+    const opts=$("#opts");
+    const disp=shuffled(q.options);
+    disp.forEach((o,idx)=>{
+      const b=document.createElement("button");b.className="opt";b.innerHTML=`<b>${String.fromCharCode(65+idx)}.</b> ${esc(o.t)}<div class="why">${esc(o.why)}</div>`;
+      b.onclick=()=>{
+        if(opts.dataset.done)return;opts.dataset.done="1";
+        disp.forEach((oo,j)=>{const bb=opts.children[j];bb.classList.add("reveal");if(oo.correct)bb.classList.add("correct");});
+        b.classList.add(o.correct?"correct":"wrong");
+        Store.logAttempt(id,!!o.correct);
+        const mk="m_"+id+"_"+(i%bank.length);
+        if(!o.correct)Store.addMistake({kind:"mcq",key:mk,topic:id,q:q.q,options:q.options,ts:Date.now()});
+        else Store.clearMistake(mk);
+        $("#next").disabled=false;
+      };
+      opts.appendChild(b);
+    });
+    $("#next").onclick=()=>{i++;draw();};
+  }
+  draw();
+}
+
+function mountExplore(id){
+  const mt=$("#exmount");if(!mt)return;
+  const keys=Object.keys(EXPLORE).filter(k=>EXPLORE[k].topic===id);
+  if(!keys.length){mt.innerHTML=`<div class="card"><p class="muted">An interactive lab for this session is coming.</p></div>`;return;}
+  let cur=keys[0];
+  const vals={};
+  function draw(){
+    const E=EXPLORE[cur];
+    E.controls.forEach(c=>{if(vals[c.key]==null)vals[c.key]=c.val;});
+    const W=560,H=240,pad=42;
+    const pts=E.plot(vals);
+    const xs=pts.map(p=>p.lev),allY=[];E.series.forEach(s=>pts.forEach(p=>allY.push(p[s.key])));
+    const xmin=Math.min(...xs),xmax=Math.max(...xs),ymin=Math.min(...allY,0),ymax=Math.max(...allY);
+    const X=x=>pad+(x-xmin)/(xmax-xmin||1)*(W-pad-10);
+    const Y=y=>H-pad-(y-ymin)/(ymax-ymin||1)*(H-pad-12);
+    const isPct=E.series.length&&E.series[0].key!=="tv";
+    const path=s=>pts.map((p,i)=>(i?"L":"M")+X(p.lev).toFixed(1)+" "+Y(p[s.key]).toFixed(1)).join(" ");
+    const fmtY=y=>isPct?(y*100).toFixed(1)+"%":Math.round(y);
+    const xlab=E.xlab||"Leverage D/(D+E)";
+    const svg=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${esc(E.title)} chart">
+      <line x1="${pad}" y1="${H-pad}" x2="${W-10}" y2="${H-pad}" stroke="var(--line)"/>
+      <line x1="${pad}" y1="12" x2="${pad}" y2="${H-pad}" stroke="var(--line)"/>
+      <text x="${(W+pad)/2}" y="${H-8}" fill="var(--tx3)" font-size="11" text-anchor="middle">${esc(xlab)}</text>
+      <text x="${pad}" y="10" fill="var(--tx3)" font-size="11">${fmtY(ymax)}</text>
+      <text x="${pad}" y="${H-pad+12}" fill="var(--tx3)" font-size="11">${E.xlab?(xmin*100).toFixed(0)+"%":"0%"}</text>
+      ${E.series.map(s=>`<path d="${path(s)}" fill="none" stroke="${s.color}" stroke-width="2.2"/>`).join("")}
+    </svg>`;
+    mt.innerHTML=`${keys.length>1?`<div class="seg" style="margin-bottom:12px">${keys.map(k=>`<button class="${k===cur?'on':''}" data-k="${k}">${esc(EXPLORE[k].title)}</button>`).join("")}</div>`:""}
+      <div class="card"><b>${esc(E.title)}</b><p class="muted" style="font-size:13.5px;margin:.4em 0 1em">${esc(E.desc)}</p>
+      ${svg}
+      <div class="legend" style="margin:8px 0 4px">${E.series.map(s=>`<span><span style="display:inline-block;width:11px;height:11px;background:${s.color};border-radius:2px;vertical-align:middle"></span> ${esc(s.label)}</span>`).join("")}</div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-top:10px">${E.controls.map(c=>`<label style="font-size:13px;color:var(--tx2)">${esc(c.label)}: <b id="lab_${c.key}">${c.pct?(vals[c.key]*100).toFixed(1)+"%":vals[c.key]}</b><input type="range" min="${c.min}" max="${c.max}" step="${c.step}" value="${vals[c.key]}" data-ck="${c.key}" data-pct="${c.pct?1:0}" style="width:100%"></label>`).join("")}</div>
+      </div>`;
+    mt.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{cur=b.dataset.k;draw();});
+    mt.querySelectorAll("[data-ck]").forEach(inp=>inp.oninput=()=>{vals[inp.dataset.ck]=parseFloat(inp.value);const lab=$("#lab_"+inp.dataset.ck);if(lab)lab.textContent=inp.dataset.pct==="1"?(vals[inp.dataset.ck]*100).toFixed(1)+"%":vals[inp.dataset.ck];redraw();});
+    function redraw(){const E=EXPLORE[cur];const pts=E.plot(vals);const allY=[];E.series.forEach(s=>pts.forEach(p=>allY.push(p[s.key])));const xs=pts.map(p=>p.lev);const xmin=Math.min(...xs),xmax=Math.max(...xs),ymin=Math.min(...allY,0),ymax=Math.max(...allY);const X=x=>pad+(x-xmin)/(xmax-xmin||1)*(W-pad-10);const Y=y=>H-pad-(y-ymin)/(ymax-ymin||1)*(H-pad-12);mt.querySelectorAll("svg path").forEach((pth,i)=>{const s=E.series[i];pth.setAttribute("d",pts.map((p,j)=>(j?"L":"M")+X(p.lev).toFixed(1)+" "+Y(p[s.key]).toFixed(1)).join(" "));});}
+  }
+  draw();
+}
+
+function mountCase(){
+  const mt=$("#casemount");if(!mt)return;
+  const c=CASES.find(x=>x.id===mt.dataset.case);if(!c)return;
+  const near=(g,w,t)=>Math.abs(g-w)<=Math.max(t,Math.abs(w)*0.01)+1e-9;
+  const goldCtx={},studentCtx={};
+  c.parts.forEach(p=>{if(p.key!=null){goldCtx[p.key]=p.gold;studentCtx[p.key]=p.gold;}});
+  const exhibits=c.exhibits.map(ex=>`<details class="card" style="margin:8px 0"><summary style="cursor:pointer;font-weight:600">${esc(ex.title)}</summary>
+    <table class="dt" style="margin-top:10px"><tr>${ex.cols.map(h=>`<th>${esc(h)}</th>`).join("")}</tr>${ex.rows.map(r=>`<tr>${r.map(v=>`<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</table></details>`).join("");
+  let earned=0,possible=0;const caseDisp={};
+  const partsHTML=c.parts.map((p,i)=>{
+    possible+=p.points;
+    const star=p.star?' <span class="pill b" title="hard/long">*</span>':'';
+    let inner="";
+    if(p.kind==="mcq"){
+      const disp=shuffled(p.options);caseDisp[i]=disp;
+      inner=`<div id="po_${i}">`+disp.map((o,j)=>`<button class="opt" data-i="${i}" data-j="${j}"><b>${String.fromCharCode(65+j)}.</b> ${esc(o.t)}<div class="why">${esc(o.why)}</div></button>`).join("")+`</div>`;
+    }else if(p.kind==="numeric"){
+      inner=`<div class="row"><input id="ci_${i}" inputmode="decimal" placeholder="Answer${p.unit?" ("+p.unit+")":""}" style="max-width:180px"><button class="btn primary sm" data-ck="${i}">Check</button><button class="btn ghost sm" data-rv="${i}">Show steps</button></div>`;
+    }
+    return `<div class="card" style="margin:10px 0"><div class="row" style="justify-content:space-between"><b>Part ${i+1}${star}</b><span class="chip s">${p.points} pts</span></div>
+      <p style="margin:.5em 0">${p.q}</p>${inner}<div id="fb_${i}" style="margin-top:10px"></div></div>`;
+  }).join("");
+  mt.innerHTML=`<p>${esc(c.scenario)}</p>${exhibits}
+    <div class="card" style="background:var(--card2)"><div class="row" style="justify-content:space-between"><b>Score</b><span><b id="cscore">0</b> / ${possible} pts</span></div>
+    <div class="bar" style="margin-top:8px"><i id="cbar" style="width:0%"></i></div>
+    <p class="muted" style="font-size:12.5px;margin:.6em 0 0">Carry-forward marking: a later part is correct if it matches the canonical answer <i>or</i> is consistent with your earlier answers.</p></div>
+    ${partsHTML}`;
+  function setScore(){$("#cscore").textContent=earned;$("#cbar").style.width=(possible?earned/possible*100:0)+"%";}
+  function showSteps(i){const p=c.parts[i];const fb=$("#fb_"+i);const steps=typeof p.steps==="function"?p.steps(studentCtx):[];fb.innerHTML+=`<div class="card" style="margin-top:8px;background:var(--bg2)"><div class="muted" style="margin-bottom:6px">Worked solution</div>${steps.map(s=>`<div style="margin:.3em 0"><b>${esc(s.l)}:</b> <span class="formula">${s.ex}</span></div>`).join("")}</div>`;}
+  c.parts.forEach((p,i)=>{
+    if(p.kind==="numeric"){
+      mt.querySelector(`[data-ck="${i}"]`).onclick=()=>{
+        const raw=$("#ci_"+i).value.replace(",",".");const v=parseFloat(raw);const fb=$("#fb_"+i);
+        if(isNaN(v)){fb.innerHTML=`<span class="muted">Enter a number.</span>`;return;}
+        const goldAns=typeof p.solve==="function"?p.solve(goldCtx):p.gold;
+        const consAns=typeof p.solve==="function"?p.solve(studentCtx):p.gold;
+        const okGold=near(v,goldAns,p.tol),okCons=near(v,consAns,p.tol);
+        const ok=okGold||okCons;
+        if(p.key!=null)studentCtx[p.key]=v;            // carry the student's value forward
+        if(!fb.dataset.scored){fb.dataset.scored="1";if(ok){earned+=p.points;}Store.logAttempt(c.topic,ok);}
+        setScore();
+        let msg;
+        if(okGold)msg=`<span class="good" style="font-weight:700">Correct — ${M.r2(goldAns)}${p.unit||""}</span>`;
+        else if(okCons)msg=`<span class="good" style="font-weight:700">Consistent with your earlier work (canonical ≈ ${M.r2(goldAns)}${p.unit||""}) — full marks on method.</span>`;
+        else msg=`<span class="bad" style="font-weight:700">Not quite — canonical ≈ ${M.r2(goldAns)}${p.unit||""}</span>`;
+        fb.innerHTML=msg;showSteps(i);
+      };
+      mt.querySelector(`[data-rv="${i}"]`).onclick=()=>{const fb=$("#fb_"+i);showSteps(i);};
+    }else if(p.kind==="mcq"){
+      const box=$("#po_"+i);const disp=caseDisp[i];
+      box.querySelectorAll(".opt").forEach(btn=>btn.onclick=()=>{
+        if(box.dataset.done)return;box.dataset.done="1";
+        const j=+btn.dataset.j;const o=disp[j];
+        box.querySelectorAll(".opt").forEach((b,k)=>{b.classList.add("reveal");if(disp[k].correct)b.classList.add("correct");});
+        btn.classList.add(o.correct?"correct":"wrong");
+        if(o.correct)earned+=p.points;Store.logAttempt(c.topic,!!o.correct);setScore();
+      });
+    }
+  });
+}
+
+function mountDeck(){
+  const mt=$("#deckmount");if(!mt)return;
+  let cram=false,queue=SR.dueList(),idx=0,shown=false;
+  function draw(){
+    if(cram&&idx>=CARDS.length){mt.innerHTML=`<div class="card"><b>Cram complete.</b> <button class="btn sm" id="back">Back to scheduled</button></div>`;$("#back").onclick=()=>{cram=false;queue=SR.dueList();idx=0;draw();};return;}
+    if(!cram&&idx>=queue.length){const ret=Math.round(SR.retention()*100);mt.innerHTML=`<div class="card"><b>All caught up.</b><p class="muted">No cards due right now. Delayed-recall retention: ${ret}%.</p><button class="btn" id="cram">Cram all ${CARDS.length} cards</button></div>`;$("#cram").onclick=()=>{cram=true;idx=0;shown=false;draw();};return;}
+    const card=cram?CARDS[idx]:queue[idx];shown=false;
+    const total=cram?CARDS.length:queue.length;
+    mt.innerHTML=`<div class="row" style="justify-content:space-between"><span class="chip s">${esc(topicNm(card.topic))} · ${card.type}</span><span class="muted">${idx+1}/${total}${cram?" · cram":""}</span></div>
+      <div class="card" style="min-height:130px;margin-top:10px"><div style="font-size:16px">${card.front}</div><div id="cback" style="display:none;margin-top:14px;border-top:1px solid var(--line);padding-top:12px">${card.back}</div></div>
+      <div id="deckctl" style="margin-top:12px"></div>`;
+    const ctl=$("#deckctl");
+    ctl.innerHTML=`<button class="btn primary" id="show">Show answer</button>`;
+    $("#show").onclick=()=>{$("#cback").style.display="block";shown=true;
+      if(cram){ctl.innerHTML=`<button class="btn" id="nx">Next →</button>`;$("#nx").onclick=()=>{idx++;draw();};}
+      else ctl.innerHTML=`<div class="row">${[[0,"Again"],[1,"Hard"],[2,"Good"],[3,"Easy"]].map(([g,l])=>`<button class="btn sm" data-g="${g}">${l} <span class="muted">${SR.preview(card.id,g)}</span></button>`).join("")}</div>`;
+      ctl.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{SR.grade(card.id,+b.dataset.g);idx++;draw();});
+    };
+  }
+  draw();
+}
+function mountMistakes(){
+  const mt=$("#mistmount");if(!mt)return;
+  function draw(){
+    const ms=Store.get().mistakes.slice().reverse();
+    if(!ms.length){mt.innerHTML=`<div class="card"><b>Nothing here — clean slate.</b><p class="muted">Missed questions from Calculate, Concepts and cases will collect here.</p></div>`;return;}
+    mt.innerHTML=`<p class="muted">${ms.length} item${ms.length>1?"s":""} to clear.</p>`+ms.map((m,i)=>`<div class="card" id="mist_${i}" style="margin:10px 0"><div class="row" style="justify-content:space-between"><span class="chip s">${esc(topicNm(m.topic))} · ${m.kind}</span></div><div style="margin:.5em 0">${m.kind==="quant"?m.prompt:esc(m.q)}</div><div id="mbody_${i}"></div></div>`).join("");
+    ms.forEach((m,i)=>{
+      const body=$("#mbody_"+i);
+      if(m.kind==="quant"){
+        body.innerHTML=`<div class="row"><input id="mi_${i}" inputmode="decimal" placeholder="Answer${m.unit?" ("+m.unit+")":""}" style="max-width:170px"><button class="btn primary sm" data-ck="${i}">Check</button></div><div id="mfb_${i}" style="margin-top:8px"></div>`;
+        body.querySelector("[data-ck]").onclick=()=>{const v=parseFloat($("#mi_"+i).value.replace(",","."));const fb=$("#mfb_"+i);if(isNaN(v)){fb.innerHTML='<span class="muted">Enter a number.</span>';return;}const tol=Math.max(0.02,Math.abs(m.answer)*0.01);if(Math.abs(v-m.answer)<=tol+1e-9){Store.clearMistake(m.key);Store.logAttempt(m.topic,true);fb.innerHTML='<span class="good">Correct — cleared.</span>';setTimeout(draw,700);}else{fb.innerHTML=`<span class="bad">Not yet — try again. </span><button class="btn ghost sm" data-rv="${i}">Show steps</button>`;fb.querySelector("[data-rv]").onclick=()=>{fb.innerHTML+=`<div class="card" style="margin-top:6px;background:var(--bg2)">${m.steps.map(s=>`<div><b>${esc(s.l)}:</b> <span class="formula">${s.ex}</span></div>`).join("")}</div>`;};}};
+      }else{
+        const disp=shuffled(m.options);
+        body.innerHTML=disp.map((o,j)=>`<button class="opt" data-j="${j}"><b>${String.fromCharCode(65+j)}.</b> ${esc(o.t)}<div class="why">${esc(o.why)}</div></button>`).join("");
+        body.querySelectorAll(".opt").forEach((btn,j)=>btn.onclick=()=>{if(body.dataset.done)return;body.dataset.done="1";const o=disp[j];body.querySelectorAll(".opt").forEach((b,k)=>{b.classList.add("reveal");if(disp[k].correct)b.classList.add("correct");});btn.classList.add(o.correct?"correct":"wrong");if(o.correct){Store.clearMistake(m.key);Store.logAttempt(m.topic,true);setTimeout(draw,800);}});
+      }
+    });
+  }
+  draw();
+}
+function mountMix(){
+  const mt=$("#mixmount");if(!mt)return;
+  const pool=[];
+  Object.keys(Templates).forEach(k=>pool.push({kind:"calc",key:k}));
+  Object.keys(MCQS).forEach(t=>MCQS[t].forEach((q,i)=>pool.push({kind:"mcq",topic:t,qi:i})));
+  let seed=Date.now()%100000,done=0,ok=0;
+  function next(){seed=(seed+6131)%100000;draw();}
+  function draw(){
+    const r=rng(seed);const item=pool[Math.floor(r()*pool.length)];
+    const head=`<div class="row" style="justify-content:space-between"><span class="muted">Interleaved · score ${ok}/${done}</span><button class="btn ghost sm" id="skip">Skip →</button></div>`;
+    if(item.kind==="calc"){
+      const T=Templates[item.key];const p=T.gen(rng(seed+1));const ans=T.solve(p);
+      mt.innerHTML=`${head}<div class="card" style="margin-top:10px"><div class="muted" style="font-size:12px;margin-bottom:6px">Which tool applies? (decide, then solve)</div><p>${T.prompt(p)}</p>
+        <div class="row"><input id="mxin" inputmode="decimal" placeholder="Answer${T.unit?" ("+T.unit+")":""}" style="max-width:180px"><button class="btn primary sm" id="mxck">Check</button></div>
+        <div id="mxfb" style="margin-top:10px"></div></div>`;
+      $("#mxck").onclick=()=>{const v=parseFloat($("#mxin").value.replace(",","."));const fb=$("#mxfb");if(isNaN(v))return;const tol=Math.max(T.tol,Math.abs(ans)*0.01);const good=Math.abs(v-ans)<=tol+1e-9;done++;if(good)ok++;Store.logAttempt(T.topic,good);if(!good)Store.addMistake({kind:"quant",key:"mx_"+item.key+"_"+seed,topic:T.topic,title:T.title,prompt:T.prompt(p),answer:M.r2(ans),unit:T.unit||"",steps:T.steps(p),ts:Date.now()});
+        fb.innerHTML=`<div class="${good?'good':'bad'}" style="font-weight:700">${good?'Correct':'Not quite'} — ${M.r2(ans)}${T.unit} · <span class="muted">Tool: ${esc(topicNm(T.topic))} — ${esc(T.title)}</span></div><div class="card" style="margin-top:6px;background:var(--bg2)">${T.steps(p).map(s=>`<div><b>${esc(s.l)}:</b> <span class="formula">${s.ex}</span></div>`).join("")}</div><button class="btn primary sm" id="mxnext" style="margin-top:8px">Next →</button>`;
+        $("#mxnext").onclick=next;};
+    }else{
+      const q=MCQS[item.topic][item.qi];
+      mt.innerHTML=`${head}<div class="card" style="margin-top:10px"><p style="font-weight:600">${esc(q.q)}</p><div id="mxopts"></div></div>`;
+      const box=$("#mxopts");const disp=shuffled(q.options);
+      disp.forEach((o,j)=>{const b=document.createElement("button");b.className="opt";b.innerHTML=`<b>${String.fromCharCode(65+j)}.</b> ${esc(o.t)}<div class="why">${esc(o.why)}</div>`;b.onclick=()=>{if(box.dataset.done)return;box.dataset.done="1";disp.forEach((oo,k)=>{box.children[k].classList.add("reveal");if(oo.correct)box.children[k].classList.add("correct");});b.classList.add(o.correct?"correct":"wrong");done++;if(o.correct)ok++;Store.logAttempt(item.topic,!!o.correct);if(!o.correct)Store.addMistake({kind:"mcq",key:"mxm_"+item.topic+"_"+item.qi,topic:item.topic,q:q.q,options:q.options,ts:Date.now()});box.insertAdjacentHTML("afterend",`<div class="muted" style="margin-top:8px;font-size:12px">Tool: ${esc(topicNm(item.topic))}</div><button class="btn primary sm" id="mxnext" style="margin-top:8px">Next →</button>`);$("#mxnext").onclick=next;};box.appendChild(b);});
+    }
+    $("#skip").onclick=next;
+  }
+  draw();
+}
+function mountEssay(k){
+  const mt=$("#essaymount");if(!mt)return;
+  const e=ESSAYS[k];if(!e){mt.innerHTML=`<div class="card"><p class="muted">No essay for this topic yet.</p></div>`;return;}
+  mt.innerHTML=`<div class="card"><p style="font-weight:600">${esc(e.prompt)}</p>
+    <textarea id="essayin" rows="7" style="width:100%;margin-top:8px" placeholder="Write a brief, precise answer…"></textarea>
+    <div class="row" style="justify-content:space-between;margin-top:6px"><span class="muted" id="wc" style="font-size:12px">0 words</span><span class="muted" style="font-size:12px">Tip: tight & correct beats long.</span></div>
+    <button class="btn primary" id="grade" style="margin-top:8px">I'm done — show rubric</button>
+    <div id="rub" style="margin-top:12px"></div></div>`;
+  const ta=$("#essayin");ta.oninput=()=>{const w=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;$("#wc").textContent=w+" words"+(w>140?" · getting long":"");};
+  $("#grade").onclick=()=>{
+    const rub=$("#rub");
+    rub.innerHTML=`<div class="card" style="background:var(--card2)"><b>Tick the points you actually made:</b>
+      ${e.points.map((p,i)=>`<label class="opt" style="cursor:pointer"><input type="checkbox" data-p="${i}"> ${esc(p)}</label>`).join("")}
+      <button class="btn primary sm" id="score2" style="margin-top:8px">Score</button><div id="escore" style="margin-top:10px"></div></div>`;
+    $("#score2").onclick=()=>{
+      const hit=rub.querySelectorAll("[data-p]:checked").length;const tot=e.points.length;const pct=Math.round(hit/tot*100);
+      Store.logAttempt(k,pct>=60);
+      $("#escore").innerHTML=`<div class="${pct>=60?'good':'warn'}" style="font-weight:700">${hit}/${tot} rubric points (${pct}%)</div>
+        <div class="card" style="margin-top:8px;background:var(--bg2)"><div class="muted" style="margin-bottom:6px">Model answer</div>${esc(e.model)}</div>`;
+    };
+  };
+}
+
+function mountTrain(kind){
+  const mt=$("#trainmount");if(!mt)return;
+  if(kind==="miscon"){
+    let i=0,score=0,seen=0;const order=MISCONCEPTIONS.map((_,j)=>j);
+    function draw(){const m=MISCONCEPTIONS[i%MISCONCEPTIONS.length];
+      mt.innerHTML=`<div class="muted" style="margin-bottom:6px">Score ${score}/${seen}</div><div class="card"><p style="font-size:16px;font-weight:600">${esc(m.s)}</p>
+        <div class="row" style="margin-top:8px"><button class="btn" data-v="1">Myth ✗</button><button class="btn" data-v="0">Fact ✓</button></div><div id="tfb" style="margin-top:10px"></div></div>`;
+      mt.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{if(mt.dataset.done)return;mt.dataset.done="1";const said=b.dataset.v==="1";const ok=said===m.myth;seen++;if(ok)score++;Store.logAttempt("capstruct",ok);
+        $("#tfb").innerHTML=`<div class="${ok?'good':'bad'}" style="font-weight:700">${ok?'Correct':'Not quite'} — this is a ${m.myth?'MYTH':'FACT'}.</div><p class="muted" style="margin:.4em 0">${esc(m.why)}</p><button class="btn primary sm" id="tnext">Next →</button>`;
+        $("#tnext").onclick=()=>{i++;mt.dataset.done="";draw();};});}
+    draw();
+  } else if(kind==="incr"){
+    let i=0,score=0,seen=0;
+    function draw(){const it=INCREMENTAL[i%INCREMENTAL.length];
+      mt.innerHTML=`<div class="muted" style="margin-bottom:6px">Score ${score}/${seen}</div><div class="card"><p style="font-size:15px">In a project NPV, is this <b>incremental</b>?</p><p style="font-size:16px;font-weight:600">${esc(it.item)}</p>
+        <div class="row" style="margin-top:8px"><button class="btn" data-v="1">Include</button><button class="btn" data-v="0">Exclude</button></div><div id="tfb" style="margin-top:10px"></div></div>`;
+      mt.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{if(mt.dataset.done)return;mt.dataset.done="1";const said=b.dataset.v==="1";const ok=said===it.inc;seen++;if(ok)score++;Store.logAttempt("paper",ok);
+        $("#tfb").innerHTML=`<div class="${ok?'good':'bad'}" style="font-weight:700">${ok?'Correct':'Not quite'} — ${it.inc?'INCLUDE':'EXCLUDE'}.</div><p class="muted" style="margin:.4em 0">${esc(it.why)}</p><button class="btn primary sm" id="tnext">Next →</button>`;
+        $("#tnext").onclick=()=>{i++;mt.dataset.done="";draw();};});}
+    draw();
+  } else {
+    let si=0;
+    function draw(){const sc=CHECKLISTS[si];const picks={};
+      mt.innerHTML=`<div class="seg" style="margin-bottom:12px">${CHECKLISTS.map((c,j)=>`<button class="${j===si?'on':''}" data-s="${j}">${esc(c.nm)}</button>`).join("")}</div>
+        <div class="card"><p>${esc(sc.desc)}</p><p class="muted" style="font-size:13px">For each factor, does it push toward MORE or LESS debt than the average firm?</p>
+        ${sc.factors.map((f,j)=>`<div style="margin:10px 0;border-top:1px solid var(--line);padding-top:10px"><b>${esc(f[0])}</b><div class="row" style="margin-top:6px"><button class="btn sm" data-f="${j}" data-d="more">More debt</button><button class="btn sm" data-f="${j}" data-d="less">Less debt</button><span id="ff_${j}" class="muted" style="font-size:13px"></span></div></div>`).join("")}
+        <div id="crec" style="margin-top:12px"></div></div>`;
+      mt.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{si=+b.dataset.s;draw();});
+      mt.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{const j=+b.dataset.f,f=sc.factors[j];const ok=b.dataset.d===f[1];picks[j]=ok;$("#ff_"+j).innerHTML=`<span class="${ok?'good':'bad'}">${ok?'✓':'✗ ('+f[1]+' debt)'}</span> ${esc(f[2])}`;
+        if(Object.keys(picks).length===sc.factors.length){const right=Object.values(picks).filter(Boolean).length;Store.logAttempt("capstruct",right>=sc.factors.length-1);$("#crec").innerHTML=`<div class="card" style="background:var(--card2)"><b>${right}/${sc.factors.length} correct.</b> Recommendation: <span class="pill g">${esc(sc.rec)}</span></div>`;}});}
+    draw();
+  }
+}
+function mountSheet(){
+  const mt=$("#sheetmount");if(!mt)return;
+  let sel=Store.get().sheet;if(!sel)sel=FORMULAS.filter(f=>f.critical).map(f=>f.nm);
+  const setSel=()=>Store.update(s=>s.sheet=sel.slice());
+  function draw(){
+    const byT={};FORMULAS.forEach(f=>{(byT[f.t]=byT[f.t]||[]).push(f);});
+    const picker=TOPICS.filter(t=>byT[t.id]).map(t=>`<div class="card" style="margin:8px 0"><b>${esc(t.nm)}</b>${byT[t.id].map(f=>`<label class="opt" style="cursor:pointer;display:flex;gap:8px;align-items:center"><input type="checkbox" data-nm="${esc(f.nm)}" ${sel.includes(f.nm)?"checked":""}> <span>${esc(f.nm)} ${f.critical?'<span class=\"pill g\">★</span>':''}</span></label>`).join("")}</div>`).join("");
+    const chosen=FORMULAS.filter(f=>sel.includes(f.nm));
+    const fit=chosen.length<=26?`<span class="good">${chosen.length} items — fits a double-sided A4</span>`:`<span class="warn">${chosen.length} items — may overflow A4; trim a few</span>`;
+    const print=`<div id="printsheet"><h2 style="margin:0 0 8px">Corporate Finance — Cheat Sheet</h2><div class="sheetcols">${chosen.map(f=>`<div class="sheetitem"><b>${esc(f.nm)}</b><div class="formula">${f.expr}</div><div class="muted" style="font-size:11px">${esc(f.when)}</div></div>`).join("")}</div></div>`;
+    mt.innerHTML=`<div class="row" style="justify-content:space-between;margin-bottom:8px"><span>${fit}</span><span class="row"><button class="btn sm" id="allcrit">★ critical only</button><button class="btn sm" id="allf">Select all</button></span></div>
+      <div class="grid" style="grid-template-columns:1fr 1fr;gap:16px" id="sheetgrid"><div>${picker}</div><div><div class="muted" style="font-size:12px;margin-bottom:6px">A4 preview</div><div class="card">${print}</div></div></div>`;
+    mt.querySelectorAll("[data-nm]").forEach(cb=>cb.onchange=()=>{const nm=cb.dataset.nm;if(cb.checked){if(!sel.includes(nm))sel.push(nm);}else sel=sel.filter(x=>x!==nm);setSel();draw();});
+    $("#allcrit").onclick=()=>{sel=FORMULAS.filter(f=>f.critical).map(f=>f.nm);setSel();draw();};
+    $("#allf").onclick=()=>{sel=FORMULAS.map(f=>f.nm);setSel();draw();};
+  }
+  draw();
+}
+
+function mountExam(){
+  const mt=$("#exammount");if(!mt)return;
+  let paper=null,endTime=0,timerId=null,submitted=false;
+  function start(mins){
+    const seed=Date.now()%100000;const r=rng(seed);
+    const pool=[];Object.keys(MCQS).forEach(t=>MCQS[t].forEach(q=>pool.push({t,q})));
+    for(let i=pool.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+    const mcqs=pool.slice(0,8).map(m=>({t:m.t,q:m.q,disp:shuffled(m.q.options)}));
+    const tkeys=["fcf","tv","capm","unlever","wacc","sust"];const pts=[10,15,15,15,15,10];
+    const probs=tkeys.map((k,i)=>{const T=Templates[k];return {k,T,p:T.gen(rng(seed+i*101+7)),pts:pts[i],star:i===3||i===4};});
+    paper={seed,mcqs,probs};endTime=Date.now()+mins*60000;submitted=false;render();
+    timerId=setInterval(tick,1000);
+  }
+  function fmt(ms){if(ms<0)ms=0;const s=Math.floor(ms/1000);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");}
+  function tick(){const el=$("#extimer");if(!el)return;const left=endTime-Date.now();el.textContent="⏱ "+fmt(left);if(left<=0){clearInterval(timerId);if(!submitted)grade();}}
+  function render(){
+    const mcqHTML=paper.mcqs.map((m,i)=>`<div class="card" style="margin:10px 0"><div class="muted" style="font-size:12px">Q${i+1} · ${esc(topicNm(m.t))} · 2.5 pts</div><p style="font-weight:600">${esc(m.q.q)}</p>
+      ${m.disp.map((o,j)=>`<label class="opt" style="cursor:pointer;display:flex;gap:8px;align-items:flex-start"><input type="radio" name="m${i}" value="${j}"> <span><b>${String.fromCharCode(65+j)}.</b> ${esc(o.t)}</span></label>`).join("")}
+      <div class="row" style="margin-top:6px;font-size:12px;color:var(--tx2)">Confidence: ${["Guess","Unsure","Sure"].map((c,ci)=>`<label style="cursor:pointer"><input type="radio" name="c${i}" value="${c.toLowerCase()}" ${ci===1?"checked":""}> ${c}</label>`).join(" · ")}</div></div>`).join("");
+    const probHTML=paper.probs.map((pr,i)=>`<div class="card" style="margin:10px 0"><div class="muted" style="font-size:12px">P${i+1} · ${esc(pr.T.title)} · ${pr.pts} pts${pr.star?' <span class="pill b">*</span>':''}</div><p>${pr.T.prompt(pr.p)}</p>
+      <input id="ep${i}" inputmode="decimal" placeholder="Answer${pr.T.unit?" ("+pr.T.unit+")":""}" style="max-width:180px"></div>`).join("");
+    mt.innerHTML=`<div class="row" style="justify-content:space-between;position:sticky;top:60px;background:var(--bg);padding:8px 0;z-index:5"><b id="extimer">⏱ ${fmt(endTime-Date.now())}</b><button class="btn primary sm" id="exsubmit">Submit exam</button></div>
+      <h2>Part I — Quiz (20 pts)</h2>${mcqHTML}
+      <h2>Part II — Problems (80 pts)</h2>${probHTML}
+      <button class="btn primary" id="exsubmit2" style="margin-top:10px">Submit exam</button><div id="exresult" style="margin-top:14px"></div>`;
+    $("#exsubmit").onclick=grade;$("#exsubmit2").onclick=grade;
+  }
+  function grade(){
+    if(submitted)return;submitted=true;clearInterval(timerId);
+    let gotI=0,gotII=0;const review=[];
+    paper.mcqs.forEach((m,i)=>{
+      const sel=mt.querySelector(`input[name="m${i}"]:checked`);const conf=(mt.querySelector(`input[name="c${i}"]:checked`)||{}).value||"unsure";
+      const ci=m.disp.findIndex(o=>o.correct);const ok=sel&&(+sel.value===ci);
+      if(ok)gotI+=2.5;
+      Store.update(s=>{const c=s.calib[conf]||(s.calib[conf]={n:0,ok:0});c.n++;if(ok)c.ok++;});
+      Store.logAttempt(m.t,!!ok);
+      if(!ok)Store.addMistake({kind:"mcq",key:"ex_"+paper.seed+"_m"+i,topic:m.t,q:m.q.q,options:m.q.options,ts:Date.now()});
+      review.push(`<div class="card" style="margin:8px 0"><div class="${ok?'good':'bad'}" style="font-weight:700">Q${i+1} ${ok?'✓':'✗'} (${conf})</div><div style="font-size:13px">${esc(m.q.q)}</div><div class="muted" style="font-size:13px;margin-top:4px">Answer: ${esc(m.disp[ci].t)} — ${esc(m.disp[ci].why)}</div></div>`);
+    });
+    paper.probs.forEach((pr,i)=>{
+      const v=parseFloat(($("#ep"+i).value||"").replace(",","."));const ans=pr.T.solve(pr.p);const tol=Math.max(pr.T.tol,Math.abs(ans)*0.01);const ok=!isNaN(v)&&Math.abs(v-ans)<=tol+1e-9;
+      if(ok)gotII+=pr.pts;Store.logAttempt(pr.T.topic,!!ok);
+      if(!ok)Store.addMistake({kind:"quant",key:"ex_"+paper.seed+"_p"+i,topic:pr.T.topic,title:pr.T.title,prompt:pr.T.prompt(pr.p),answer:M.r2(ans),unit:pr.T.unit||"",steps:pr.T.steps(pr.p),ts:Date.now()});
+      review.push(`<div class="card" style="margin:8px 0"><div class="${ok?'good':'bad'}" style="font-weight:700">P${i+1} ${ok?'✓':'✗'} (${pr.pts} pts)</div><div style="font-size:13px">${pr.T.prompt(pr.p)}</div><div class="muted" style="font-size:13px;margin-top:4px">Answer: ${M.r2(ans)}${pr.T.unit||""}</div></div>`);
+    });
+    const total=gotI+gotII;const band=total>=85?"A":total>=70?"B":total>=55?"C":total>=40?"D":"F";
+    $("#exresult").innerHTML=`<div class="card" style="background:var(--card2)"><div class="row" style="justify-content:space-between"><b>Result</b><span class="pill ${total>=55?'g':'b'}">${band}</span></div>
+      <div class="bignum" style="margin:.2em 0">${M.r2(total)}%</div>
+      <div class="muted">Part I ${M.r2(gotI)}/20 · Part II ${gotII}/80. Missed items added to your <a href="#/mistakes">Mistakes queue</a>.</div>
+      <h3>Review</h3>${review.join("")}
+      <button class="btn" onclick="location.hash='#/exam';App.route()">New exam</button></div>`;
+    try{$("#exresult").scrollIntoView({behavior:"smooth",block:"start"});}catch(e){}
+  }
+  mt.innerHTML=`<div class="card"><b>Ready?</b><p class="muted">8 quiz questions + 6 problems, point-weighted like the real paper. Pick a duration and work without notes.</p>
+    <div class="row"><button class="btn primary" data-min="180">Full 3h</button><button class="btn" data-min="60">Quick 60 min</button><button class="btn" data-min="20">Sprint 20 min</button></div></div>`;
+  mt.querySelectorAll("[data-min]").forEach(b=>b.onclick=()=>start(+b.dataset.min));
+}
+function mountStats(){
+  const mt=$("#statsmount");if(!mt)return;
+  const st=Store.get();const rd=readiness();
+  const recent=st.attempts.slice(-50);const racc=recent.length?Math.round(recent.filter(a=>a.ok).length/recent.length*100):0;
+  const cal=st.calib;const calRow=(k)=>{const c=cal[k]||{n:0,ok:0};return `<tr><td>${k[0].toUpperCase()+k.slice(1)}</td><td>${c.n}</td><td>${c.n?Math.round(c.ok/c.n*100):0}%</td></tr>`;};
+  const ret=Math.round(SR.retention()*100);
+  const topics=TOPICS.map(t=>({t,m:topicMastery(t.id)})).sort((a,b)=>a.m-b.m);
+  mt.innerHTML=`<div class="grid cards" style="margin-top:12px">
+    <div class="card"><div class="muted">Exam readiness</div><div class="bignum">${rd}%</div></div>
+    <div class="card"><div class="muted">Recent accuracy (last ${recent.length})</div><div class="bignum">${racc}%</div></div>
+    <div class="card"><div class="muted">Deck retention (delayed recall)</div><div class="bignum">${ret}%</div></div>
+    <div class="card"><div class="muted">Mistakes open</div><div class="bignum">${st.mistakes.length}</div></div></div>
+    <h2>Calibration</h2><div class="card"><p class="muted" style="font-size:13px">How often you're right at each confidence level — well-calibrated means "Sure" ≫ "Guess".</p>
+      <table class="dt"><tr><th>Confidence</th><th>n</th><th>% right</th></tr>${calRow("sure")}${calRow("unsure")}${calRow("guess")}</table></div>
+    <h2>Weakest topics</h2><div class="card">${topics.slice(0,6).map(x=>`<div style="margin:8px 0"><div class="row" style="justify-content:space-between"><span>${esc(x.t.nm)}</span><span class="muted">${x.m}%</span></div><div class="bar"><i style="width:${x.m}%"></i></div></div>`).join("")}</div>
+    <h2>Backup</h2><div class="card"><div class="row"><button class="btn" id="expbtn">⬇ Download backup</button><label class="btn" style="cursor:pointer">⬆ Restore<input type="file" id="impfile" accept="application/json" style="display:none"></label><button class="btn ghost" id="resetbtn">Reset all progress</button></div></div>`;
+  $("#expbtn").onclick=()=>{const blob=new Blob([JSON.stringify(Store.get())],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="cf-dojo-backup.json";a.click();};
+  $("#impfile").onchange=(e)=>{const f=e.target.files[0];if(!f)return;const rdr=new FileReader();rdr.onload=()=>{try{const data=JSON.parse(rdr.result);Store.update(s=>Object.assign(s,data));toast("Progress restored");route();}catch(err){toast("Invalid backup file");}};rdr.readAsText(f);};
+  $("#resetbtn").onclick=()=>{if(confirm("Erase all progress on this device?")){Store.reset();route();}};
+}
+
+/* ---------- Router ---------- */
+const NAV=[["#/home","Home","home"],["#/learn","Learn","learn"],["#/practice","Practice","mix"],["#/cases","Cases","case"],["#/exam","Exam","exam"],["#/reference","Formulas","sheet"]];
+const BOTTOM=NAV.slice(0,5);
+const PRACTICE_ROUTES=["#/deck","#/mix","#/train","#/essays","#/mistakes"];
+const REFERENCE_ROUTES=["#/formula","#/sheet"];
+function renderNav(){
+  const cur=location.hash||"#/home";
+  const act=h=>{
+    if(h==="#/practice")return cur.startsWith("#/practice")||PRACTICE_ROUTES.some(r=>cur===r||cur.startsWith(r+"/"));
+    if(h==="#/reference")return cur.startsWith("#/reference")||REFERENCE_ROUTES.some(r=>cur===r||cur.startsWith(r+"/"));
+    if(h==="#/cases")return cur.startsWith("#/cases")||cur.startsWith("#/case");
+    return cur===h||cur.startsWith(h+"/");
+  };
+  $("#tabs").innerHTML=NAV.map(([h,l])=>`<a href="${h}" class="${act(h)?'on':''}">${esc(l)}</a>`).join("");
+  $("#bottomnav").innerHTML=BOTTOM.map(([h,l,ic])=>`<a href="${h}" class="${act(h)?'on':''}"><span>${icon(ic)}</span>${esc(l)}</a>`).join("");
+}
+function route(){
+  const parts=(location.hash||"#/home").slice(2).split("/");
+  const head=parts[0]||"home";
+  let html="";
+  if(head==="home")html=V.home();
+  else if(head==="learn"&&parts[1])html=V.topic(parts[1]);
+  else if(head==="learn")html=V.learn();
+  else if(head==="practice")html=V.practice();
+  else if(head==="reference")html=V.reference();
+  else if(head==="cases")html=V.cases();
+  else if(head==="case"&&parts[1])html=V.case(parts[1]);
+  else if(head==="deck")html=V.deck();
+  else if(head==="mistakes")html=V.mistakes();
+  else if(head==="mix")html=V.mix();
+  else if(head==="essays")html=V.essays();
+  else if(head==="train"&&parts[1])html=V.trainer(parts[1]);
+  else if(head==="train")html=V.train();
+  else if(head==="exam")html=V.exam();
+  else if(head==="stats")html=V.stats();
+  else if(head==="sheet")html=V.sheet();
+  else if(head==="formula")html=V.formula();
+  else if(head==="selftest")html=V.selftest();
+  else html=V.home();
+  const app=$("#app");app.innerHTML=html;
+  renderNav();
+  // post-render mounts & bindings
+  if(head==="learn"&&parts[1]){
+    const tab=parts[2]||"takeaways";
+    if(tab==="explore")mountExplore(parts[1]);
+    if(tab==="calculate")mountCalc(parts[1]);
+    if(tab==="concepts")mountMCQ(parts[1]);
+    if(tab==="case")mountCase();
+  }
+  if(head==="case"&&parts[1])mountCase();
+  if(head==="deck")mountDeck();
+  if(head==="mistakes")mountMistakes();
+  if(head==="mix")mountMix();
+  if(head==="train"&&parts[1])mountTrain(parts[1]);
+  if(head==="exam")mountExam();
+  if(head==="stats")mountStats();
+  if(head==="sheet")mountSheet();
+  if(head==="essays"){const ks=Object.keys(ESSAYS);mountEssay(ks[0]);const pick=$("#essaypick");if(pick)pick.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{pick.querySelectorAll("button").forEach(x=>x.classList.remove("on"));b.classList.add("on");mountEssay(b.dataset.k);});}
+  if(head==="home"){const ed=$("#examdate");if(ed)ed.onchange=()=>{Store.update(s=>s.examDate=ed.value);route();};}
+  app.focus();
+}
+
+/* ---------- Bootstrap ---------- */
+function initTheme(){const t=localStorage.getItem(TKEY)||"dark";document.documentElement.setAttribute("data-theme",t);const b=$("#theme");b.setAttribute("aria-pressed",t==="light");b.onclick=()=>{const nt=document.documentElement.getAttribute("data-theme")==="light"?"dark":"light";document.documentElement.setAttribute("data-theme",nt);try{localStorage.setItem(TKEY,nt);}catch(e){}b.setAttribute("aria-pressed",nt==="light");};}
+window.addEventListener("hashchange",route);
+document.addEventListener("DOMContentLoaded",()=>{initTheme();if(!location.hash)location.hash="#/home";route();});
+
+return {CFMath,SelfTest,Templates,route};
+})();
+window.App=App;
+</script>
+</body>
+</html>
